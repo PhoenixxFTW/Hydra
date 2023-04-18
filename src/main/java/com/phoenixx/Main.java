@@ -1,5 +1,7 @@
 package com.phoenixx;
 
+import com.phoenixx.script.VugenScript;
+
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Objects;
 public class Main {
     public static boolean DEBUG_ENV = true;
     public static String currentPath;
+
+    public static List<VugenScript> loadedScripts = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println();
@@ -72,11 +76,26 @@ public class Main {
             }
         }
 
+        System.out.println("Loading vugen scripts...");
+        // Script folders
+        for(File scriptFolder: vugenScripts) {
+            if(!scriptFolder.isDirectory()) {
+                System.out.println("Script file: " + scriptFolder.getName() + " IS NOT A DIRECTORY. Cancelling...");
+                continue;
+            }
+            VugenScript vugenScript = VugenScript.buildScript(scriptFolder);
+            vugenScript.loadActionFiles();
+            loadedScripts.add(vugenScript);
+        }
+        System.out.println("Loaded " + loadedScripts.size() + " scripts!");
+
         // TODO
         /**
          * 1) Read in all the action files and connect the transactions to the snapshots IDs
          * 2) Find the snapshots under results/iterations etc and load them into an object
          * 3) Determine correlations and parameters based off of the data retrieved
          */
+
+
     }
 }
