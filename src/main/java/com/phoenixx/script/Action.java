@@ -1,8 +1,9 @@
 package com.phoenixx.script;
 
+import com.phoenixx.util.Parser;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Junaid Talpur
@@ -12,10 +13,11 @@ import java.util.regex.Pattern;
 public class Action {
 
     private final String actionName;
-    private List<Transaction> transactions;
+    private final List<Transaction> transactions;
 
     public Action(String actionName, List<String> fileLines) {
         this.actionName = actionName;
+        this.transactions = new ArrayList<>();
         this.readAction(fileLines);
     }
 
@@ -24,10 +26,9 @@ public class Action {
      * @param fileLines List of strings containing data from the action file
      */
     private void readAction(List<String> fileLines) {
-
         boolean multiComment = false;
-        boolean activeTransaction = false;
         Transaction currentTransaction = null;
+        Step currentStep = null;
         for(String line: fileLines) {
             // Multiline comment detection
             if (!multiComment && line.contains("/*")) {
@@ -42,31 +43,63 @@ public class Action {
                 continue;
             }
 
-            Pattern pattern;
-            Matcher matcher;
+            // Detect the start of a transaction using regex
             if(currentTransaction == null) {
-                pattern = Pattern.compile("lr_start_transaction\\(\"([^\"]+)\"\\);");
-                matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    String parameterValue = matcher.group(1);
-                    System.out.println("FOUND THE START TRANSACTION NAME: " + parameterValue);
-                    currentTransaction = new Transaction(parameterValue);
+                String foundTransaction = Parser.regexCheck(line, Parser.TRANSACTION_START);
+                if(foundTransaction != null) {
+                    System.out.println("FOUND THE START TRANSACTION NAME: " + foundTransaction);
+                    currentTransaction = new Transaction(foundTransaction);
                 }
             } else {
-                //TODO Figure out a better way to do this, because it will only match with the "LR_AUTO" parameter
-                pattern = Pattern.compile("lr_end_transaction\\(\"([^\"]+)\",\\s*LR_AUTO\\);");
-                matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    String parameterValue = matcher.group(1);
-                    System.out.println("FOUND THE END TRANSACTION NAME: " + parameterValue);
+                // Detect the end of a transaction with regex
+                String foundTransaction = Parser.regexCheck(line, Parser.TRANSACTION_END);
+                if(foundTransaction != null) {
+                    System.out.println("FOUND THE END TRANSACTION NAME: " + foundTransaction);
                     // Finish off the transaction and add it to the list
                     this.transactions.add(currentTransaction);
                     currentTransaction = null;
-                }
+                } else {
+                    //TODO Add detection for web_url, web_custom_request, web_submit_data
+                    /**
+                     *  Load the t[x].inf, t[x].json, t[x]_RequestBody.txt, t[x]_RequestHeader.txt, t[x]_ResponseHeader.txt
+                     */
+                    if(currentStep == null) {
+                        //TODO Might be more efficient to do a simple .contains on the string and THEN grab the Pattern maybe?
+                        String function = "web_url";
+                        String foundRequest = Parser.regexCheck(line, Parser.WEB_URL);
+                        if(foundRequest == null) {
+                            function = "web_custom_request";
+                            foundRequest = Parser.regexCheck(line, Parser.WEB_CUSTOM_REQUEST);
+                        }
+                        if(foundRequest == null) {
+                            function = "web_submit_data";
+                            foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_DATA);
+                        }
+                        if(foundRequest == null) {
+                            function = "web_submit_form";
+                            foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_FORM);
+                        }
+                        if(foundRequest == null) {
+                            function = "web_image";
+                            foundRequest = Parser.regexCheck(line, Parser.WEB_IMAGE);
+                        }
 
-                /**
-                 *  Load the t[x].inf, t[x].json, t[x]_RequestBody.txt, t[x]_RequestHeader.txt, t[x]_ResponseHeader.txt
-                 */
+                        if (foundRequest != null) {
+                            currentStep = new Step(function, foundRequest);
+                        }
+                    } else {
+                        // End of the current Step
+                        if(line.trim().equals("LAST);")) {
+                            currentTransaction.getSteps().add(currentStep);
+                            System.out.println("Finished step: " + currentStep.getStepName() + " with steps: \n"+currentStep.getStepData());
+                            currentStep = null;
+                        } else {
+                            line = line.trim();
+                            // Remove the whitespace and the first and last two characters (the quotes and final comma)
+                            currentStep.getStepData().add(line.substring(1, line.length() - 2));
+                        }
+                    }
+                }
             }
         }
     }

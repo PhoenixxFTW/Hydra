@@ -12,14 +12,22 @@ import java.util.List;
  */
 public class Transaction {
     private final String transactionName;
-    private final List<HTTPRequest> requests;
+    private final List<Step> steps;
 
     public Transaction(String transactionName) {
         this.transactionName = transactionName;
-        this.requests = new ArrayList<>();
+        this.steps = new ArrayList<>();
+    }
+
+    public void buildTransaction() {
+
     }
 
     public String getTransactionName() {
         return transactionName;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
     }
 }
