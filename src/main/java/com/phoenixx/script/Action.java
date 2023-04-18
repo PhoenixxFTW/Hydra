@@ -26,6 +26,8 @@ public class Action {
     private void readAction(List<String> fileLines) {
 
         boolean multiComment = false;
+        boolean activeTransaction = false;
+        Transaction currentTransaction = null;
         for(String line: fileLines) {
             // Multiline comment detection
             if (!multiComment && line.contains("/*")) {
@@ -36,38 +38,35 @@ public class Action {
             }
 
             // If the line is within a multi comment block or starts with a comment, we skip the line
-            if (!multiComment || line.startsWith("//")) {
+            if (multiComment || line.startsWith("//")) {
                 continue;
             }
 
-            int commentIndex = line.indexOf("//");
-            String checkString = "lr_start_transaction";
-
-            /*if (line.contains(checkString) && !(line.contains("//") && !(commentIndex > line.indexOf(checkString)))) {
-                int startIndex = line.indexOf(checkString) + checkString.length();
-
-                // Find the end of the "lr_start_transaction" function
-                int endIndex = -1;
-                for(int i = 0; i < 30; i++) {
-                    char foundChar = line.charAt(startIndex + i);
-
-                    if (foundChar == ')') {
-                        endIndex = i;
-                        break;
-                    }
+            Pattern pattern;
+            Matcher matcher;
+            if(currentTransaction == null) {
+                pattern = Pattern.compile("lr_start_transaction\\(\"([^\"]+)\"\\);");
+                matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    String parameterValue = matcher.group(1);
+                    System.out.println("FOUND THE START TRANSACTION NAME: " + parameterValue);
+                    currentTransaction = new Transaction(parameterValue);
+                }
+            } else {
+                //TODO Figure out a better way to do this, because it will only match with the "LR_AUTO" parameter
+                pattern = Pattern.compile("lr_end_transaction\\(\"([^\"]+)\",\\s*LR_AUTO\\);");
+                matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    String parameterValue = matcher.group(1);
+                    System.out.println("FOUND THE END TRANSACTION NAME: " + parameterValue);
+                    // Finish off the transaction and add it to the list
+                    this.transactions.add(currentTransaction);
+                    currentTransaction = null;
                 }
 
-                String patternCheck = line.substring(startIndex, endIndex);
-                System.out.println("FOUND PATTERN CHECK: " + patternCheck);
-            }*/
-            System.out.println("LINE: " + line);
-
-            Pattern pattern = Pattern.compile("lr_start_transaction\\(\"([^\"]+)\"\\);");
-            Matcher matcher = pattern.matcher(line);
-            if (matcher.find()) {
-                String parameterValue = matcher.group(1);
-                System.out.println("FOUND THE TRANSACTION NAME: " + parameterValue);
-
+                /**
+                 *  Load the t[x].inf, t[x].json, t[x]_RequestBody.txt, t[x]_RequestHeader.txt, t[x]_ResponseHeader.txt
+                 */
             }
         }
     }

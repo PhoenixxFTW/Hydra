@@ -79,6 +79,7 @@ public class VugenScript {
 
             while ((line = bufferedReader.readLine()) != null) {
                 lines.add(line);
+                //System.out.println("LINE: " + line);
             }
 
             fileReader.close();
