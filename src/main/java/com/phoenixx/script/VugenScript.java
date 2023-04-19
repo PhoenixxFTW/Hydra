@@ -48,12 +48,10 @@ public class VugenScript {
                     }*/
                     if (!startReadingActions && line.equalsIgnoreCase("[Actions]")) {
                         startReadingActions = true;
-                        //System.out.println("STARTING ACTION READING @@@@");
                     } else if (startReadingActions) {
                         if (line.contains(".c")) {
                             vugenScript.addActionFile(line.split("=")[1]);
                         } else {
-                            //System.out.println("STOPPING ACTION READING @@@");
                             startReadingActions = false;
                         }
                     }
