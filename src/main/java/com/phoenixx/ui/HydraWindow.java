@@ -1,13 +1,13 @@
 package com.phoenixx.ui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -15,12 +15,15 @@ import java.net.URL;
  * @project Hydra
  * @since 10:17 AM [19-04-2023]
  */
+//TODO Rename this to Vugen Script selector or something
 public class HydraWindow extends Application {
     private double xOffset = 0.0D, yOffset = 0.0D;
 
-    public static void main(String[] args) throws IOException {
-
+    /*public static void main(String[] args) throws IOException {
         launch(args);
+    }*/
+
+    public HydraWindow() {
     }
 
     @Override
@@ -42,6 +45,11 @@ public class HydraWindow extends Application {
         root.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - xOffset);
             primaryStage.setY(event.getScreenY() - yOffset);
+        });
+
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
 }

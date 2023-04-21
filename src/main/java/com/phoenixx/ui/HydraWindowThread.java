@@ -5,11 +5,11 @@ package com.phoenixx.ui;
  * @project Hydra
  * @since 10:19 AM [19-04-2023]
  */
-public class DisplayThread extends Thread {
-    public HydraWindow luckHydraWindow;
+public class HydraWindowThread extends Thread {
+    public HydraWindow hydraWindow;
 
-    public DisplayThread(HydraWindow luckHydraWindow){
-        this.luckHydraWindow = luckHydraWindow;
+    public HydraWindowThread(HydraWindow hydraWindow){
+        this.hydraWindow = hydraWindow;
     }
 
     public void run(){
