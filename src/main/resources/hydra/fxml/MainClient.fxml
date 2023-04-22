@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.stage.Stage?>
 
-<Stage title="Main Stage" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<Stage title="Main Stage" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
     <scene>
         <Scene fill="#16191e">
             <AnchorPane prefHeight="812.0" prefWidth="1255.0" style="-fx-background-color: #16191E;">
@@ -22,7 +22,7 @@
                         <children>
                            <ImageView fitHeight="50.0" fitWidth="60.0" translateX="5.0" translateY="5.0" x="15.0">
                               <image>
-                                 <Image url="@../../../../../../../../../../../Downloads/hydra.png" />
+                                 <Image url="@images//hydra.png" />
                               </image>
                            </ImageView>
                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="124.0" text="Hydra" textFill="WHITE">
