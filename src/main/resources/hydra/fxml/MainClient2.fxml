@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -28,7 +29,8 @@
                   </Label>
                </children>
             </HBox>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3b434a" height="11.0" stroke="BLACK" strokeType="INSIDE" width="1255.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3b434a" height="14.0" stroke="BLACK" strokeType="INSIDE" width="1255.0" />
+            <Pane prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" />
          </children>
       </VBox>
    </children>

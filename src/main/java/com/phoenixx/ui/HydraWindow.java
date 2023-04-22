@@ -28,7 +28,7 @@ public class HydraWindow extends Application {
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
-        URL url = getClass().getResource("/hydra/fxml/MainClient.fxml");
+        URL url = getClass().getResource("/hydra/fxml/MainClient2.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         Parent root = loader.load();
 
