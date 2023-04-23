@@ -1,5 +1,6 @@
 package com.phoenixx.ui.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class HydraWindowController {
 
     public Pane mainContentArea;
+    public JFXButton exitButton;
     //public JFXButton exitButton;
 
     public void initialize() throws IOException {
@@ -31,6 +33,7 @@ public class HydraWindowController {
      * @param actionEvent
      */
     public void exitPressed(ActionEvent actionEvent) {
+        //TODO Add popup to ask user if they would like to exit / save the script before closing
         System.exit(0);
     }
 }

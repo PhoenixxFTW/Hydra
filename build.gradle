@@ -11,6 +11,6 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.jfoenix/jfoenix
-    implementation group: 'com.jfoenix', name: 'jfoenix', version: '9.0.10'
+    implementation group: 'com.jfoenix', name: 'jfoenix', version: '8.0.10'
 
 }
