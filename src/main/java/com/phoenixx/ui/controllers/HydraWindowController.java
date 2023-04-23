@@ -24,9 +24,10 @@ public class HydraWindowController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/LoadScriptPage.fxml"));
         Parent loadScriptScene = loader.load();
         LoadScriptController loadScriptController = loader.getController();
+        loadScriptController.setMainContentArea(this.mainContentArea);
+
         mainContentArea.getChildren().setAll(loadScriptScene);
     }
-
 
     /**
      * Called when the user clicks on the X in the top right of the popup

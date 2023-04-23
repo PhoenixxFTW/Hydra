@@ -3,7 +3,10 @@ package com.phoenixx.ui.controllers;
 import com.phoenixx.HydraApp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
@@ -18,6 +21,9 @@ public class LoadScriptController {
 
     @FXML
     public Label info;
+
+    // Content area for the hydra client
+    private Pane mainContentArea;
 
     /**
      * Called on menu initialization
@@ -44,6 +50,18 @@ public class LoadScriptController {
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 
             HydraApp.getInstance().loadScript(selectedFile);
+
+            // Load the script editing scene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene.fxml"));
+            Parent editorScene = loader.load();
+            //TODO Add controller for script editor
+            //LoadScriptController loadScriptController = loader.getController();
+
+            mainContentArea.getChildren().setAll(editorScene);
         }
+    }
+
+    public void setMainContentArea(Pane mainContentArea) {
+        this.mainContentArea = mainContentArea;
     }
 }

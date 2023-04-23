@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.26975259377494015, 0.6671987230646449" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;">
+         <items>
+            <ScrollPane maxWidth="-Infinity" minWidth="50.0" prefHeight="740.0" prefWidth="381.0">
+              <content>
+                <AnchorPane maxWidth="-Infinity" minWidth="10.0" prefHeight="740.0" prefWidth="335.0" />
+              </content>
+            </ScrollPane>
+            <ScrollPane minHeight="-Infinity" minWidth="100.0" prefHeight="740.0" prefWidth="208.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="740.0" prefWidth="418.0" />
+               </content>
+            </ScrollPane>
+            <ScrollPane minWidth="100.0" prefHeight="742.0" prefWidth="418.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="740.0" prefWidth="418.0" />
+               </content>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+   </children>
+</Pane>
