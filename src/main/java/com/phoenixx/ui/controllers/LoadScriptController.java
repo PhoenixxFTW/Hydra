@@ -46,12 +46,4 @@ public class LoadScriptController {
             HydraApp.getInstance().loadScript(selectedFile);
         }
     }
-
-    /**
-     * Called when the user clicks on the X in the top right of the popup
-     * @param actionEvent
-     */
-    public void exitPressed(ActionEvent actionEvent) {
-        System.exit(0);
-    }
 }

@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
+<Pane prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.LoadScriptController">
    <children>
       <AnchorPane layoutX="406.0" layoutY="225.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="444.0">
          <children>
             <AnchorPane layoutY="39.0" prefHeight="215.0" prefWidth="444.0" style="-fx-background-color: #17171a;">
                <children>
-                  <Button layoutX="22.0" layoutY="30.0" mnemonicParsing="false" onAction="#loadVugenScript" prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #333336;" text="Load Vugen Script" textAlignment="CENTER" textFill="#c3c3c3">
+                  <Button layoutX="22.0" layoutY="54.0" mnemonicParsing="false" onAction="#loadVugenScript" prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #333336;" text="Load Vugen Script" textAlignment="CENTER" textFill="#c3c3c3">
                      <font>
                         <Font name="Raleway" size="16.0" />
                      </font>
@@ -30,17 +30,6 @@
                         <Font name="Raleway" size="16.0" />
                      </font>
                   </Label>
-                  <Button layoutX="22.0" layoutY="85.0" mnemonicParsing="false" onAction="#loadVugenScript" prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #333336;" text="Load Vugen Script" textAlignment="CENTER" textFill="#c3c3c3">
-                     <font>
-                        <Font name="Raleway" size="16.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
                </children>
             </AnchorPane>
          </children>

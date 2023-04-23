@@ -1,7 +1,11 @@
 package com.phoenixx.ui.controllers;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+
+import java.io.IOException;
 
 /**
  * @author Junaid Talpur
@@ -10,24 +14,23 @@ import javafx.scene.control.Label;
  */
 public class HydraWindowController {
 
-    @FXML
-    public Label info;
+    public Pane mainContentArea;
+    //public JFXButton exitButton;
 
-    public void initialize() {
-        try {
-            //Manifest manifest = new JarInputStream(new URL("http://localhost:1337/client.jar").openStream()).getManifest();
-            info.setText("Build Date: " + "\n" + "Build Version: ");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public void initialize() throws IOException {
+        // Start off with the loading page
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/LoadScriptPage.fxml"));
+        Parent loadScriptScene = loader.load();
+        LoadScriptController loadScriptController = loader.getController();
+        mainContentArea.getChildren().setAll(loadScriptScene);
     }
 
-    public void inject() {
 
-        exit();
-    }
-
-    public void exit() {
+    /**
+     * Called when the user clicks on the X in the top right of the popup
+     * @param actionEvent
+     */
+    public void exitPressed(ActionEvent actionEvent) {
         System.exit(0);
     }
 }
