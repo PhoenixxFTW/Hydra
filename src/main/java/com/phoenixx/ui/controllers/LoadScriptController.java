@@ -31,7 +31,7 @@ public class LoadScriptController {
      */
     @FXML
     public void initialize() {
-        this.info.setText("Build Version: " + HydraApp.BUILD_VERSION + "Build Date: " + HydraApp.BUILD_DATE);
+        this.info.setText("Build Version: " + HydraApp.BUILD_VERSION + "\nBuild Date: " + HydraApp.BUILD_DATE);
     }
 
     /**
@@ -69,5 +69,9 @@ public class LoadScriptController {
 
     public void setMainContentArea(Pane mainContentArea) {
         this.mainContentArea = mainContentArea;
+    }
+
+    public void loadHydraScript(ActionEvent actionEvent) {
+
     }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -15,22 +14,25 @@
          <children>
             <VBox alignment="CENTER" prefHeight="742.0" prefWidth="1255.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" onAction="#loadVugenScript" prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #333336;" text="Load Vugen Script" textAlignment="CENTER" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Raleway" size="16.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Label fx:id="info" alignment="CENTER" prefHeight="55.0" prefWidth="400.0" text="Version 1.0.0a" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Raleway" size="16.0" />
-                     </font>
-                  </Label>
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="179.0" prefWidth="400.0" style="-fx-background-color: #17171a; -fx-border-radius: 10 10 10 10; -fx-background-radius: 10 10 10 10;">
+                     <children>
+                        <Label fx:id="info" alignment="CENTER" layoutY="124.0" prefHeight="55.0" prefWidth="400.0" text="Version 1.0.0a" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Raleway" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXButton layoutX="11.0" layoutY="14.0" onAction="#loadVugenScript" prefHeight="45.0" prefWidth="379.0" style="-fx-background-color: #0067A5;" text="Load Vugen Script" textFill="WHITE">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton disable="true" layoutX="11.0" layoutY="67.0" onAction="#loadHydraScript" prefHeight="45.0" prefWidth="379.0" style="-fx-background-color: #0067A5;" text="Load Hydra Script" textFill="WHITE">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </Pane>
                </children>
             </VBox>
          </children>

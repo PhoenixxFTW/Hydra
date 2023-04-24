@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 
@@ -34,7 +35,7 @@ public class HydraWindow extends Application {
         primaryStage.setScene(new Scene(root));
         //primaryStage.setTitle("Hydra");
         //primaryStage.setResizable(false);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         //primaryStage.getIcons().add(new Image("/hydra/fxml/images/Logo_Dark.png"));
         primaryStage.show();
 
