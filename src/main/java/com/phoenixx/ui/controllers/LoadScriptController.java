@@ -1,6 +1,7 @@
 package com.phoenixx.ui.controllers;
 
 import com.phoenixx.HydraApp;
+import com.phoenixx.script.VugenScript;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,15 +50,20 @@ public class LoadScriptController {
         if (selectedFile != null) {
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 
-            HydraApp.getInstance().loadScript(selectedFile);
+            VugenScript loadedScript = HydraApp.getInstance().loadScript(selectedFile);
 
-            // Load the script editing scene
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene.fxml"));
-            Parent editorScene = loader.load();
-            //TODO Add controller for script editor
-            //LoadScriptController loadScriptController = loader.getController();
+            if(loadedScript != null) {
+                // Load the script editing scene
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene.fxml"));
+                Parent editorScene = loader.load();
 
-            mainContentArea.getChildren().setAll(editorScene);
+                ScriptEditorController scriptEditorController = loader.getController();
+                scriptEditorController.setVugenScript(loadedScript);
+                mainContentArea.getChildren().setAll(editorScene);
+
+            } else {
+                // TODO Add some sort of error message popup?
+            }
         }
     }
 

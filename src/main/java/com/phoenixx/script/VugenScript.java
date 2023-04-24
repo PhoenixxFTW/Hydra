@@ -20,21 +20,22 @@ public class VugenScript {
     private final List<String> actionFiles;
     private final List<Action> actions;
 
-    private VugenScript(File scriptFolder) {
+    public VugenScript(File scriptFolder) throws IOException {
         this.scriptFolder = scriptFolder;
         this.actionFiles = new ArrayList<>();
         this.actions = new ArrayList<>();
+
+        this.buildScript(this.scriptFolder);
+        this.loadActionFiles();
     }
 
-    public static VugenScript buildScript(File scriptFolder) throws IOException {
-        VugenScript vugenScript = new VugenScript(scriptFolder);
-
+    private void buildScript(File scriptFolder) throws IOException {
         // All files inside the main script folder
         for(File scriptFile: Objects.requireNonNull(scriptFolder.listFiles())) {
 
             // Check if the given file ends with the .usr extension to confirm it's a script file
             if (scriptFile.getName().contains(".usr")) {
-                vugenScript.setScriptFile(scriptFile);
+                this.setScriptFile(scriptFile);
 
                 BufferedReader reader = new BufferedReader(new FileReader(scriptFile));
                 String line = reader.readLine();
@@ -50,7 +51,7 @@ public class VugenScript {
                         startReadingActions = true;
                     } else if (startReadingActions) {
                         if (line.contains(".c")) {
-                            vugenScript.addActionFile(line.split("=")[1]);
+                            this.actionFiles.add(line.split("=")[1]);
                         } else {
                             startReadingActions = false;
                         }
@@ -62,11 +63,10 @@ public class VugenScript {
                 }
             }
         }
-        return vugenScript;
     }
 
-    public void loadActionFiles() throws IOException {
-        for(String actionFile: this.getActionFiles()) {
+    private void loadActionFiles() throws IOException {
+        for(String actionFile: this.actionFiles) {
             List<String> lines = new ArrayList<>();
             System.out.println("LOADING ACTION FILE: " + actionFile);
 
@@ -90,16 +90,8 @@ public class VugenScript {
         this.scriptFile = scriptFile;
     }
 
-    public void addActionFile(String actionFile) {
-        this.actionFiles.add(actionFile);
-    }
-
-    public List<String> getActionFiles() {
-        return actionFiles;
-    }
-
-    public File getScriptFile() {
-        return scriptFile;
+    public List<Action> getActions() {
+        return actions;
     }
 
     public File getScriptFolder() {

@@ -71,28 +71,29 @@ public class HydraApp {
 
     }
 
-    public void loadScript(File file) throws IOException {
+    public VugenScript loadScript(File file) throws IOException {
         System.out.println("UPDATED PATH: " + file.getAbsolutePath());
 
         if(!file.isDirectory()) {
             System.out.println("Current location is not a valid Vugen file!");
-            return;
+            return null;
         }
 
         if(!DEBUG_ENV) {
             if (!file.getName().contains(".usr")) {
                 System.out.println("File does not end in .usr!");
-                return;
+                return null;
             }
         }
 
         if(Objects.requireNonNull(file.list()).length == 0) {
             System.out.println("No scripts found in folder: " + file.getName());
-            return;
+            return null;
         }
-        VugenScript vugenScript = VugenScript.buildScript(file);
-        vugenScript.loadActionFiles();
+        VugenScript vugenScript = new VugenScript(file);
         this.loadedScripts.add(vugenScript);
+
+        return vugenScript;
     }
 
     public static HydraApp getInstance() {
