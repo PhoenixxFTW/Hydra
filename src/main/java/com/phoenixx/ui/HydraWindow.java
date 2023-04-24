@@ -1,5 +1,6 @@
 package com.phoenixx.ui;
 
+import com.phoenixx.ui.controllers.HydraWindowController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +37,8 @@ public class HydraWindow extends Application {
         URL url = getClass().getResource("/hydra/fxml/MainClient.fxml");
         FXMLLoader loader = new FXMLLoader(url);
         Parent root = loader.load();
+        HydraWindowController hydraWindowController = loader.getController();
+        hydraWindowController.primaryStage = primaryStage;
 
         primaryStage.setScene(new Scene(root));
         //primaryStage.setTitle("Hydra");
@@ -57,6 +60,16 @@ public class HydraWindow extends Application {
         primaryStage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
             System.exit(0);
+        });
+
+        // TODO Implement the other corners as well
+        // Used to change the cursor when the user hovers over the corners
+        root.setOnMouseMoved(event -> {
+            if (event.getX() > primaryStage.getWidth() - 10 && event.getX() < primaryStage.getWidth() + 10 && event.getY() > primaryStage.getHeight() - 10 && event.getY() < primaryStage.getHeight() + 10) {
+                root.setCursor(Cursor.NW_RESIZE);
+            } else {
+                root.setCursor(null);
+            }
         });
 
         // This allows us to scale the window from the bottom

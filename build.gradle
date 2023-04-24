@@ -1,6 +1,15 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    }
 }
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'com.phoenixx'
 version '1.0-SNAPSHOT'
@@ -13,4 +22,12 @@ dependencies {
     // https://mvnrepository.com/artifact/com.jfoenix/jfoenix
     implementation group: 'com.jfoenix', name: 'jfoenix', version: '8.0.10'
 
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.phoenixx.Main'
+        )
+    }
 }

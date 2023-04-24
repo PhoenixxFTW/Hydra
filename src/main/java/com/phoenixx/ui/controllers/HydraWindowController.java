@@ -6,9 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -29,6 +32,12 @@ public class HydraWindowController {
     public MenuBar menuBar;
     //public JFXButton exitButton;
 
+    public Stage primaryStage;
+    public ImageView maximizeImage;
+
+    private static Image MAX_IMAGE;
+    private static Image MIN_IMAGE;
+
     public void initialize() throws IOException {
         // Start off with the loading page
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/LoadScriptPage.fxml"));
@@ -38,6 +47,9 @@ public class HydraWindowController {
 
         footerLeftLabel.setText("Hydra - PROTOTYPE");
         footerRightLabel.setText("v1.0.0a");
+
+        MAX_IMAGE = new Image("hydra/fxml/images/window/Icon_Maximize.png");
+        MIN_IMAGE = new Image("hydra/fxml/images/window/Icon_Minimize.png");
 
         mainContentArea.getChildren().setAll(loadScriptScene);
     }
@@ -52,9 +64,16 @@ public class HydraWindowController {
     }
 
     public void onMaximize(ActionEvent actionEvent) {
+        if(!primaryStage.isMaximized()) {
+            maximizeImage.setImage(MIN_IMAGE);
+        } else {
+            maximizeImage.setImage(MAX_IMAGE);
+        }
+
+        primaryStage.setMaximized(!primaryStage.isMaximized());
     }
 
     public void onMinimize(ActionEvent actionEvent) {
-
+        primaryStage.setIconified(true);
     }
 }

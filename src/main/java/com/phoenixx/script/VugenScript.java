@@ -25,6 +25,7 @@ public class VugenScript {
         this.actionFiles = new ArrayList<>();
         this.actions = new ArrayList<>();
 
+        //TODO Multi-thread the building of the script so as to not block the main thread
         this.buildScript(this.scriptFolder);
         this.loadActionFiles();
     }

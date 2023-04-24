@@ -55,7 +55,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0">
                      <image>
-                        <Image url="@images/window/Icon_Minimize.png" />
+                        <Image url="@images/window/Icon_Hide.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -65,7 +65,7 @@
             </JFXButton>
             <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMaximize" prefHeight="30.0" prefWidth="30.0">
                <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0">
+                  <ImageView fx:id="maximizeImage" fitHeight="25.0" fitWidth="25.0">
                      <image>
                         <Image url="@images/window/Icon_Maximize.png" />
                      </image>
