@@ -54,11 +54,11 @@ public class LoadScriptController {
 
             if(loadedScript != null) {
                 // Load the script editing scene
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene2.fxml"));
                 Parent editorScene = loader.load();
 
-                ScriptEditorController scriptEditorController = loader.getController();
-                scriptEditorController.setVugenScript(loadedScript);
+                ScriptViewController scriptViewController = loader.getController();
+                scriptViewController.setVugenScript(loadedScript);
                 mainContentArea.getChildren().setAll(editorScene);
 
             } else {

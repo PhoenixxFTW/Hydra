@@ -195,3 +195,10 @@
     -fx-text-box-border: #288998;
     -fx-control-inner-background: #3c506a;
 }
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: #3b434a;
+}
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: #3b434a;
+}

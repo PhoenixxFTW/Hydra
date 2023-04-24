@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.ScriptEditorController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.ScriptViewController">
    <children>
       <SplitPane dividerPositions="0.20031923383878691, 0.6089385474860335" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="1255.0" style="-fx-background-color: #22272e;">
          <items>
             <ScrollPane fx:id="projectManagerScroll" maxWidth="-Infinity" minWidth="50.0" prefHeight="740.0" prefWidth="381.0" style="-fx-background-color: #22272e;" stylesheets="@css/jfoenixstyle.css">
               <content>
-                <AnchorPane fx:id="projectManagerPane" maxWidth="-Infinity" minWidth="10.0" prefHeight="740.0" prefWidth="248.0" style="-fx-background-color: #22272e;" />
+                <AnchorPane fx:id="projectManagerPane" maxWidth="-Infinity" minWidth="10.0" prefHeight="740.0" prefWidth="248.0" style="-fx-background-color: #22272e;">
+                     <children>
+                        <JFXComboBox fx:id="actionFileChooser" layoutX="1.0" prefHeight="28.0" prefWidth="247.0" stylesheets="@css/fullpacksyling.css" />
+                     </children></AnchorPane>
               </content>
             </ScrollPane>
             <ScrollPane fx:id="requestEditorScroll" minHeight="-Infinity" minWidth="100.0" prefHeight="740.0" prefWidth="208.0" style="-fx-background-color: #22272e;" stylesheets="@css/jfoenixstyle.css">
