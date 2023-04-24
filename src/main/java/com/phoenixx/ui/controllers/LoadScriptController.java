@@ -31,7 +31,7 @@ public class LoadScriptController {
      */
     @FXML
     public void initialize() {
-        this.info.setText("Build Date: " + HydraApp.BUILD_DATE + "\n" + "Build Version: " + HydraApp.BUILD_VERSION);
+        this.info.setText("Build Version: " + HydraApp.BUILD_VERSION + "Build Date: " + HydraApp.BUILD_DATE);
     }
 
     /**

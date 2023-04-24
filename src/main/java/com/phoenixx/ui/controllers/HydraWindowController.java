@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 
@@ -17,6 +19,8 @@ public class HydraWindowController {
 
     public Pane mainContentArea;
     public JFXButton exitButton;
+    public VBox vBox;
+    public Rectangle separator;
     //public JFXButton exitButton;
 
     public void initialize() throws IOException {

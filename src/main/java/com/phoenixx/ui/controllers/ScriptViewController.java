@@ -11,6 +11,7 @@ import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -42,7 +43,6 @@ public class ScriptViewController {
         this.vugenScript = vugenScript;
 
         final JFXTreeView projectManagerTree = new JFXTreeView<>();
-
         FilterableTreeItem<String> rootNode = new FilterableTreeItem<>(this.vugenScript.getScriptFolder().getName());
         rootNode.setExpanded(true);
 
@@ -54,7 +54,8 @@ public class ScriptViewController {
                 FilterableTreeItem<String> transactionNode = new FilterableTreeItem<>(transaction.getTransactionName());
 
                 for(Step step: transaction.getSteps()) {
-                    FilterableTreeItem<String> stepNode = new FilterableTreeItem<>(transaction.getTransactionName());
+                    FilterableTreeItem<String> stepNode = new FilterableTreeItem<>(step.getStepName());
+                    transactionNode.getInternalChildren().add(stepNode);
                 }
 
                 actionNode.getInternalChildren().add(transactionNode);
@@ -71,9 +72,25 @@ public class ScriptViewController {
         }, filterField.textProperty()));
 
         projectManagerTree.setRoot(rootNode);
+        projectManagerTree.prefHeightProperty().bind(treeVBox.heightProperty());
 
-        treeVBox.getChildren().addAll(new JFXTreeViewPath(projectManagerTree), projectManagerTree, filterField);
+        //TODO Redo this
+        // Find the ScrollPane inside the treeView
+        ScrollPane scrollPane = (ScrollPane) projectManagerTree.lookup(".scroll-pane");
+        if (scrollPane != null) {
+            // Bind the ScrollPane's prefHeight property to the vBox's height property
+            scrollPane.prefHeightProperty().bind(treeVBox.heightProperty());
+            // Set the fitToHeight property to true
+            scrollPane.setFitToHeight(true);
+        }
+
+        JFXTreeViewPath jfxTreeViewPath = new JFXTreeViewPath(projectManagerTree);
+        // Bind the treeViewPath's prefHeight property to the vBox's height property
+        jfxTreeViewPath.prefHeightProperty().bind(treeVBox.heightProperty());
+
+        treeVBox.getChildren().addAll(jfxTreeViewPath, projectManagerTree, filterField);
         VBox.setVgrow(projectManagerTree, Priority.ALWAYS);
+
     }
 
     private void setActionFile() {
