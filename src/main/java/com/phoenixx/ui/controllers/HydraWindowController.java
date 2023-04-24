@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -24,6 +25,8 @@ public class HydraWindowController {
     public Rectangle separator;
     public Label footerLeftLabel;
     public Label footerRightLabel;
+    //TODO Add proper menu bar (Saving, exit, export, find/replace etc)
+    public MenuBar menuBar;
     //public JFXButton exitButton;
 
     public void initialize() throws IOException {

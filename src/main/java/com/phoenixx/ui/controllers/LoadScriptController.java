@@ -54,7 +54,7 @@ public class LoadScriptController {
 
             if(loadedScript != null) {
                 // Load the script editing scene
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptEditorScene2.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/ScriptViewScene.fxml"));
                 Parent editorScene = loader.load();
 
                 ScriptViewController scriptViewController = loader.getController();

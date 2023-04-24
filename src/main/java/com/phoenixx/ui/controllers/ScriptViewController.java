@@ -11,9 +11,11 @@ import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -32,6 +34,7 @@ public class ScriptViewController {
 
     public Node scriptViewRoot;
     public VBox treeVBox;
+    public JFXTreeView projectManagerTree;
 
     private VugenScript vugenScript;
 
@@ -42,7 +45,7 @@ public class ScriptViewController {
     public void setVugenScript(VugenScript vugenScript) {
         this.vugenScript = vugenScript;
 
-        final JFXTreeView projectManagerTree = new JFXTreeView<>();
+        //final JFXTreeView projectManagerTree = new JFXTreeView<>();
         FilterableTreeItem<String> rootNode = new FilterableTreeItem<>(this.vugenScript.getScriptFolder().getName());
         rootNode.setExpanded(true);
 
@@ -65,16 +68,21 @@ public class ScriptViewController {
         }
 
         TextField filterField = new JFXTextField();
+        filterField.setPromptText("Search...");
+        filterField.getStyleClass().add("FilterField");
+        filterField.getStyleClass().add("/hydra/fxml/css/fullpackstyling.css");
+
         rootNode.predicateProperty().bind(Bindings.createObjectBinding(() -> {
-            if (filterField.getText() == null || filterField.getText().isEmpty())
+            if (filterField.getText() == null || filterField.getText().isEmpty() || filterField.getText().equals("Search...")) {
                 return null;
+            }
             return TreeItemPredicate.create(actor -> actor.contains(filterField.getText()));
         }, filterField.textProperty()));
 
         projectManagerTree.setRoot(rootNode);
-        projectManagerTree.prefHeightProperty().bind(treeVBox.heightProperty());
+        //projectManagerTree.prefHeightProperty().bind(treeVBox.heightProperty());
 
-        //TODO Redo this
+/*        //TODO Redo this
         // Find the ScrollPane inside the treeView
         ScrollPane scrollPane = (ScrollPane) projectManagerTree.lookup(".scroll-pane");
         if (scrollPane != null) {
@@ -82,14 +90,46 @@ public class ScriptViewController {
             scrollPane.prefHeightProperty().bind(treeVBox.heightProperty());
             // Set the fitToHeight property to true
             scrollPane.setFitToHeight(true);
-        }
+        }*/
 
         JFXTreeViewPath jfxTreeViewPath = new JFXTreeViewPath(projectManagerTree);
-        // Bind the treeViewPath's prefHeight property to the vBox's height property
-        jfxTreeViewPath.prefHeightProperty().bind(treeVBox.heightProperty());
+        jfxTreeViewPath.getStylesheets().add("/hydra/fxml/css/fullpackstyling.css");
 
-        treeVBox.getChildren().addAll(jfxTreeViewPath, projectManagerTree, filterField);
-        VBox.setVgrow(projectManagerTree, Priority.ALWAYS);
+        jfxTreeViewPath.setFocusTraversable(false);
+        jfxTreeViewPath.setFitToWidth(true);
+
+        // change color + size for the path
+        projectManagerTree
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        observable -> {
+                            for (Node node : ((HBox) jfxTreeViewPath.getContent()).getChildren()) {
+                                if (node instanceof StackPane) {
+                                    for (int i = 0; i < ((StackPane) node).getChildren().size(); i++) {
+                                        Node path = ((StackPane) node).getChildren().get(i);
+                                        if (path instanceof Button) {
+                                            // modify css all buttons, can't use .button directly.
+                                            // Because set traversable for .button affects all buttons
+                                            path.getStyleClass().add("tv-path-button");
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+        treeVBox.getChildren().add(0, jfxTreeViewPath);
+        treeVBox.getChildren().add(1, filterField);
+
+        // fix the padding issue
+        Label tvPathLabel = (Label) ((HBox) jfxTreeViewPath.getContent()).getChildren().get(0);
+        tvPathLabel.getStyleClass().add("tv-path-init-label");
+
+        //TODO Add filter field
+
+        /*treeVBox.getChildren().clear();
+        treeVBox.getChildren().addAll(jfxTreeViewPath, projectManagerTree, filterField);*/
+        //VBox.setVgrow(projectManagerTree, Priority.ALWAYS);
 
     }
 

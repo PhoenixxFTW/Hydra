@@ -3,6 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -26,7 +29,28 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Pane prefHeight="30.0" prefWidth="1146.0" HBox.hgrow="ALWAYS" />
+            <Pane prefHeight="30.0" prefWidth="1146.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <MenuBar fx:id="menuBar" layoutX="14.0" layoutY="2.0" style="-fx-background-color: #16191EFF;" stylesheets="@css/fullpackstyling.css">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children></Pane>
             <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMinimize" prefHeight="30.0" prefWidth="30.0">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0">
@@ -51,7 +75,7 @@
                   <Insets right="2.0" />
                </HBox.margin>
             </JFXButton>
-            <JFXButton fx:id="exitButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onAction="#exitPressed" prefHeight="30.0" prefWidth="30.0">
+            <JFXButton fx:id="exitButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="-Infinity" minWidth="-Infinity" onAction="#exitPressed" prefHeight="30.0" prefWidth="30.0" ripplerFill="RED">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0">
                      <image>

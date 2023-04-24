@@ -1,0 +1,5 @@
+.root {
+
+    /* color for tree view path */
+    -fx-tv-path-color: dimGray;
+}

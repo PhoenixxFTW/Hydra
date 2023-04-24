@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="mainContentArea" prefHeight="760.0" prefWidth="1255.0" style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.ScriptViewController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox VBox.vgrow="ALWAYS">
+               <children>
+                  <SplitPane dividerPositions="0.20031923383878691" style="-fx-background-color: #16191EFF;" stylesheets="@css/fullpackstyling.css" HBox.hgrow="ALWAYS">
+                    <items>
+                        <VBox fx:id="treeVBox" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <JFXTreeView fx:id="projectManagerTree" prefHeight="758.0" prefWidth="248.0" />
+                           </children>
+                        </VBox>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #2a3139;" />
+                    </items>
+                  </SplitPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>
