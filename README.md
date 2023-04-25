@@ -1,7 +1,7 @@
 # Hydra - LoadRunner Vugen IDE
 
-Hydra is a custom IDE designed to help you optimize and improve the performance of your LoadRunner Vugen scripts. By providing advanced correlation and parameterization tools,
-along with support for multiple protocols, Hydra can help you achieve better results and reduce the time and effort required for manual script tuning.
+Hydra is a custom IDE designed to make correlations and parameterization easier and more efficient for your LoadRunner Vugen scripts, helping you optimize and streamline their development process. 
+By providing advanced correlation and parameterization tools, along with support for multiple protocols, Hydra can help you achieve better results and reduce the time and effort required for manual script tuning.
 
 ## Features
 Some of the key features of Hydra include:
