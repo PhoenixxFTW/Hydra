@@ -11,13 +11,18 @@ import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 
 /**
  * @author Junaid Talpur
@@ -36,11 +41,21 @@ public class ScriptViewController {
     public Node scriptViewRoot;
     public VBox treeVBox;
     public JFXTreeView projectManagerTree;
+    public AnchorPane codeTab;
 
     private VugenScript vugenScript;
 
-    public void initialize() {
+    public void initialize() throws IOException {
         // Start off with the loading page
+
+        // Load the editor
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
+        Parent editorScene = loader.load();
+
+        codeTab.getChildren().setAll(editorScene);
+
+        /*ScriptViewController scriptViewController = loader.getController();
+        scriptViewController.setVugenScript(loadedScript);*/
     }
 
     public void setVugenScript(VugenScript vugenScript) {

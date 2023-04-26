@@ -227,7 +227,7 @@
  ******************************************************************************/
 
 .tree-view, .tree-cell {
-    -fx-background-color: #22272e;
+    -fx-background-color: #1f2329;
     -fx-text-fill: white ;
 }
 
@@ -275,7 +275,7 @@
 .jfx-tree-view-path .buttons-container {
     -fx-font-size: 11px;
     -fx-pref-height: 30;
-    -fx-background-color: #22272e;
+    -fx-background-color: #1f2329;
     -fx-cursor: hand;
 }
 

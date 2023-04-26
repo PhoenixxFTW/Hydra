@@ -20,7 +20,7 @@
                               <JFXTreeView fx:id="projectManagerTree" prefHeight="758.0" prefWidth="248.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #2a3139;" />
+                      <AnchorPane fx:id="codeTab" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #2a3139;" />
                     </items>
                   </SplitPane>
                </children>
