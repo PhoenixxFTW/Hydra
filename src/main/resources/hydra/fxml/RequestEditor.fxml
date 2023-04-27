@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXScrollPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.layout.*?>
 
-<JFXScrollPane fx:id="scrollPane" prefHeight="758.0" prefWidth="999.0" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.RequestEditorController">
+
+<StackPane fx:id="mainPane" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.RequestEditorController">
    <children>
-      <StackPane prefHeight="150.0" prefWidth="200.0">
+      <JFXScrollPane fx:id="scrollPane" prefHeight="758.0" prefWidth="999.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <StackPane prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="lineColumn" prefHeight="758.0" prefWidth="30.0" style="-fx-background-color: #22272e;" />
-                  <VBox fx:id="textColumn" prefHeight="758.0" prefWidth="750.0" style="-fx-background-color: #2a3139;" HBox.hgrow="ALWAYS" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="lineColumn" prefHeight="758.0" prefWidth="30.0" style="-fx-background-color: #22272e;" />
+                        <VBox fx:id="textColumn" prefHeight="758.0" prefWidth="750.0" style="-fx-background-color: #2a3139;" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </StackPane>
          </children>
-      </StackPane>
+      </JFXScrollPane>
    </children>
-</JFXScrollPane>
+</StackPane>

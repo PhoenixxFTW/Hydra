@@ -14,10 +14,12 @@ public class Action {
 
     private final String actionName;
     private final List<Transaction> transactions;
+    private final List<String> codeLines;
 
     public Action(String actionName, List<String> fileLines) {
         this.actionName = actionName;
         this.transactions = new ArrayList<>();
+        this.codeLines = fileLines;
         this.readAction(fileLines);
     }
 
@@ -110,5 +112,9 @@ public class Action {
 
     public List<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public List<String> getCodeLines() {
+        return codeLines;
     }
 }

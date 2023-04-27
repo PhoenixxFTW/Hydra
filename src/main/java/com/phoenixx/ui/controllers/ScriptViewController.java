@@ -47,18 +47,9 @@ public class ScriptViewController {
 
     public void initialize() throws IOException {
         // Start off with the loading page
-
-        // Load the editor
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
-        Parent editorScene = loader.load();
-
-        codeTab.getChildren().setAll(editorScene);
-
-        /*ScriptViewController scriptViewController = loader.getController();
-        scriptViewController.setVugenScript(loadedScript);*/
     }
 
-    public void setVugenScript(VugenScript vugenScript) {
+    public void setVugenScript(VugenScript vugenScript) throws IOException {
         this.vugenScript = vugenScript;
 
         //final JFXTreeView projectManagerTree = new JFXTreeView<>();
@@ -149,6 +140,14 @@ public class ScriptViewController {
         // fix the padding issue
         Label tvPathLabel = (Label) ((HBox) jfxTreeViewPath.getContent()).getChildren().get(0);
         tvPathLabel.getStyleClass().add("tv-path-init-label");
+
+        // Load the editor
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
+        Parent editorScene = loader.load();
+        //codeTab.getChildren().setAll(editorScene);
+
+        RequestEditorController editorController = loader.getController();
+        editorController.setupScript(this.vugenScript.getActions().get(1), codeTab);
     }
 
     private void setActionFile() {
