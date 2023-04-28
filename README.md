@@ -3,6 +3,8 @@
 Hydra is a custom IDE designed to make correlations and parameterization easier and more efficient for your LoadRunner Vugen scripts, helping you optimize and streamline their development process. 
 By providing advanced correlation and parameterization tools, along with support for multiple protocols, Hydra can help you achieve better results and reduce the time and effort required for manual script tuning.
 
+[![Build and publish artifact](https://github.com/PhoenixxFTW/Hydra/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/PhoenixxFTW/Hydra/actions/workflows/gradle.yml)
+
 ## Features
 Some of the key features of Hydra include:
 - Script loading: Hydra allows you to load existing LoadRunner Vugen scripts, making it easy to import and modify your existing test cases.
@@ -19,6 +21,8 @@ You can find some screenshots of the tool below, please keep in mind everything 
 ![LoadScript](https://user-images.githubusercontent.com/24358694/234293102-3704c102-baff-4ed6-a279-33be4e29a024.jpg)
 
 ![WIP Editor](https://user-images.githubusercontent.com/24358694/234293163-0fc68c4b-8bb4-4fbe-95c1-df293a27c658.jpg)
+![image](https://user-images.githubusercontent.com/24358694/234886378-a83d7613-39b1-4fe3-89bc-95fd2acca240.png)
+
 
 ## Future plans
 We are continuously working to improve Hydra and plan to add new features in the future, including:
