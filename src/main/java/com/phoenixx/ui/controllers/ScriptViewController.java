@@ -10,19 +10,22 @@ import com.phoenixx.script.VugenScript;
 import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
 import javafx.beans.binding.Bindings;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Junaid Talpur
@@ -30,18 +33,12 @@ import java.io.IOException;
  * @since 8:46 PM [23-04-2023]
  */
 public class ScriptViewController {
-/*    public ScrollPane projectManagerScroll;
-    public AnchorPane projectManagerPane;
-    public ScrollPane requestEditorScroll;
-    public AnchorPane requestEditorPane;
-    public ScrollPane responseEditorScroll;
-    public AnchorPane responseEditorPane;
-    public JFXComboBox<String> actionFileChooser;*/
-
     public Node scriptViewRoot;
     public VBox treeVBox;
     public JFXTreeView projectManagerTree;
-    public AnchorPane codeTab;
+    public StackPane codeTab;
+
+    public RequestEditorController editorController;
 
     private VugenScript vugenScript;
 
@@ -67,7 +64,6 @@ public class ScriptViewController {
                     FilterableTreeItem<String> stepNode = new FilterableTreeItem<>(step.getStepName());
                     transactionNode.getInternalChildren().add(stepNode);
                 }
-
                 actionNode.getInternalChildren().add(transactionNode);
             }
 
@@ -94,9 +90,67 @@ public class ScriptViewController {
         jfxTreeViewPath.setFocusTraversable(false);
         jfxTreeViewPath.setFitToWidth(true);
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
+        Parent editorScene = loader.load();
+        codeTab.getChildren().setAll(editorScene);
+        editorController = loader.getController();
+
+        // Add event filter for double-click events
+        projectManagerTree.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getClickCount() == 2) {
+                FilterableTreeItem<String> stepItem = (FilterableTreeItem<String>) projectManagerTree.getSelectionModel().getSelectedItem();
+                if (stepItem != null) {
+                    // Do something when item1 is double-clicked
+                    System.out.println("Clicked on request: " + stepItem.getValue());
+
+                    // Get parent folders
+                    List<String> parentFolders = new ArrayList<>();
+                    TreeItem<String> parent = stepItem.getParent();
+                    while (parent != null) {
+                        parentFolders.add(parent.getValue());
+                        parent = parent.getParent();
+                    }
+                    Collections.reverse(parentFolders);
+
+                    if(parentFolders.size() < 2) {
+                        return;
+                    }
+                    String actionFileName = parentFolders.get(1);
+                    String transactionName = parentFolders.get(2);
+
+                    for(Action action: vugenScript.getActions()) {
+                        if(action.getActionName().equalsIgnoreCase(actionFileName)) {
+                            for(Transaction transaction: action.getTransactions()) {
+                                if(transaction.getTransactionName().equalsIgnoreCase(transactionName)) {
+                                    for(Step step: transaction.getSteps()) {
+                                        if(step.getStepName().equalsIgnoreCase(stepItem.getValue())) {
+                                            System.out.println("FOUND STEP @@@@@@@@@@: " + step);
+                                            try {
+                                                requestUpdate(step);
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Do something with parent folders
+                    System.out.println("Item 1 double-clicked in folders: " + parentFolders);
+                }
+            }
+        });
+
+        // Add event listener for selection changes
+       /* projectManagerTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Old val: " + oldValue + " New val: " + newValue);
+        });
+*/
         // change color + size for the path
         projectManagerTree.getSelectionModel().selectedItemProperty().addListener(observable -> {
-            for (Node node : ((HBox) jfxTreeViewPath.getContent()).getChildren()) {
+            for (Node node: ((HBox) jfxTreeViewPath.getContent()).getChildren()) {
                 if (node instanceof StackPane) {
                     for (int i = 0; i < ((StackPane) node).getChildren().size(); i++) {
                         Node path = ((StackPane) node).getChildren().get(i);
@@ -110,30 +164,6 @@ public class ScriptViewController {
             }
         });
 
-        PseudoClass subElementPseudoClass = PseudoClass.getPseudoClass("sub-tree-item");
-
-/*        projectManagerTree.setCellFactory(tv -> {
-            TreeCell<String> cell = new TreeCell<String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    //setDisclosureNode(null);
-
-                    if (empty) {
-                        setText("");
-                        setGraphic(null);
-                    } else {
-                        setText(item); // appropriate text for item
-                    }
-                }
-
-            };
-            cell.treeItemProperty().addListener((obs, oldTreeItem, newTreeItem) -> {
-                cell.pseudoClassStateChanged(subElementPseudoClass, newTreeItem != null && newTreeItem.getParent() != cell.getTreeView().getRoot());
-            });
-            return cell ;
-        });*/
-
         treeVBox.getChildren().add(0, jfxTreeViewPath);
         treeVBox.getChildren().add(1, filterField);
 
@@ -142,12 +172,24 @@ public class ScriptViewController {
         tvPathLabel.getStyleClass().add("tv-path-init-label");
 
         // Load the editor
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
         Parent editorScene = loader.load();
         //codeTab.getChildren().setAll(editorScene);
 
         RequestEditorController editorController = loader.getController();
-        editorController.setupScript(this.vugenScript.getActions().get(1), codeTab);
+        editorController.setupScript(this.vugenScript.getActions().get(1), codeTab);*/
+    }
+
+    private void requestUpdate(Step step) throws IOException {
+        if(editorController == null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
+            Parent editorScene = loader.load();
+            codeTab.getChildren().setAll(editorScene);
+            editorController = loader.getController();
+        }
+        if(editorController != null) {
+            editorController.updateRequestEditor(step);
+        }
     }
 
     private void setActionFile() {
