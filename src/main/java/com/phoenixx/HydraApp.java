@@ -1,6 +1,6 @@
 package com.phoenixx;
 
-import com.phoenixx.script.VugenScript;
+import com.phoenixx.core.VugenScript;
 import com.phoenixx.ui.HydraWindow;
 import com.phoenixx.ui.HydraWindowThread;
 

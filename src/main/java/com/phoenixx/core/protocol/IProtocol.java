@@ -1,4 +1,4 @@
-package com.phoenixx.script.protocol;
+package com.phoenixx.core.protocol;
 
 /**
  * @author Junaid Talpur

@@ -1,4 +1,4 @@
-package com.phoenixx.script;
+package com.phoenixx.core;
 
 import java.util.ArrayList;
 import java.util.List;
