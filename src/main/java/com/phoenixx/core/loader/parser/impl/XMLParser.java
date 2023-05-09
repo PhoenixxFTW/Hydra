@@ -29,13 +29,11 @@ public class XMLParser extends AbstractParser<Document> {
 
     @Override
     public void parse(InputStream stream) {
-        System.out.println("PARSING XML FILE @@@@@@@@@@@@@@@: " + stream);
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             this.doc = dBuilder.parse(stream);
-            //this.doc.getDocumentElement().normalize();
-
+            this.doc.getDocumentElement().normalize();
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }

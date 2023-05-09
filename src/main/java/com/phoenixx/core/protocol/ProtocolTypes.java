@@ -25,4 +25,19 @@ public enum ProtocolTypes {
     public String getName() {
         return name;
     }
+
+    /**
+     * Retrieves the {@link ProtocolTypes} with the specified name value
+     * @param name The name to search for
+     *
+     * @return {@link ProtocolTypes}
+     */
+    public static ProtocolTypes getFromName(String name) {
+        for (ProtocolTypes value : ProtocolTypes.values()) {
+            if(value.name.equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
 }

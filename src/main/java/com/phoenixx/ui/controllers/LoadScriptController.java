@@ -1,7 +1,7 @@
 package com.phoenixx.ui.controllers;
 
 import com.phoenixx.HydraApp;
-import com.phoenixx.core.script.VugenScript;
+import com.phoenixx.core.script.impl.VugenScript;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

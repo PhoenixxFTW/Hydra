@@ -3,22 +3,20 @@ package com.phoenixx.core;
 import com.phoenixx.HydraApp;
 import com.phoenixx.core.loader.FileLoader;
 import com.phoenixx.core.loader.parser.impl.XMLParser;
-import com.phoenixx.core.script.VugenScript;
+import com.phoenixx.core.protocol.IProtocol;
+import com.phoenixx.core.protocol.ProtocolManager;
+import com.phoenixx.core.protocol.ProtocolTypes;
+import com.phoenixx.core.script.ScriptFile;
+import com.phoenixx.core.script.impl.VugenScript;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,8 +28,10 @@ public class ScriptManager {
 
     private VugenScript loadedScript;
 
+    private final ProtocolManager protocolManager;
+
     public ScriptManager() {
-        super();
+        this.protocolManager = new ProtocolManager();
     }
 
     public VugenScript loadScript(File file) throws IOException {
@@ -68,11 +68,19 @@ public class ScriptManager {
         Document document = loader.getParser().getDataObject();
 
         String scriptName;
+        String[] protocolNames;
+        List<IProtocol> protocols = new ArrayList<>();
         List<String> actionFiles = new ArrayList<>();
 
         scriptName = document.getElementsByTagName("ScriptName").item(0).getTextContent();
+        protocolNames = document.getElementsByTagName("Protocol").item(0).getTextContent().split(", ");
+
+        for (String protocolName: protocolNames) {
+            protocols.add(this.protocolManager.getProtocolFromType(ProtocolTypes.getFromName(protocolName)));
+        }
 
         System.out.println("SCRIPT NAME: " + scriptName);
+        System.out.println("Protocol NAME: " + Arrays.toString(protocolNames));
 
         NodeList nodes = document.getElementsByTagName("ActionFiles").item(0).getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -82,16 +90,14 @@ public class ScriptManager {
             }
         }
 
+        ScriptFile scriptFile = new ScriptFile(file, actionFiles);
+
         System.out.println("Action files: " + actionFiles);
 
-        return null;
-
-
-        /*VugenScript vugenScript = new VugenScript(file);
-        vugenScript.getActions().addAll(actionFiles);
+        VugenScript vugenScript = new VugenScript(scriptName, scriptFile, protocols);
         this.setLoadedScript(vugenScript);
 
-        return vugenScript;*/
+        return vugenScript;
     }
 
     public void setLoadedScript(VugenScript loadedScript) {
@@ -99,6 +105,6 @@ public class ScriptManager {
     }
 
     public VugenScript getLoadedScript() {
-        return loadedScript;
+        return this.loadedScript;
     }
 }

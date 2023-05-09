@@ -10,7 +10,8 @@ import java.util.Objects;
  * @project VugenThinker
  * @since 11:53 AM [17-02-2023]
  */
-public class VugenScript {
+@Deprecated
+public class VugenScriptOld {
     // The folder containing all the scripts files
     private final File scriptFolder;
     // The main script file ending in .usr
@@ -20,7 +21,7 @@ public class VugenScript {
     private final List<String> actionFiles;
     private final List<Action> actions;
 
-    public VugenScript(File scriptFolder) throws IOException {
+    public VugenScriptOld(File scriptFolder) throws IOException {
         this.scriptFolder = scriptFolder;
         this.actionFiles = new ArrayList<>();
         this.actions = new ArrayList<>();
