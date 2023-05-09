@@ -27,7 +27,6 @@ public abstract class AbstractScript implements IScript {
     public AbstractScript(String name, ScriptFile scriptFile, List<IProtocol> protocols) {
         this.name = name;
         this.scriptFile = scriptFile;
-        this.snapshotManager = new SnapshotManager(this);
         this.actions = new ArrayList<>();
         this.protocols = protocols;
 
@@ -36,6 +35,8 @@ public abstract class AbstractScript implements IScript {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.snapshotManager = new SnapshotManager(this);
     }
 
     /**

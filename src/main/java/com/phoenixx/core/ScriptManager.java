@@ -59,7 +59,7 @@ public class ScriptManager {
         /**
          * ======= THEORY =======
          * 1) Pass the "ScriptUploadMetadata.xml" into the FileLoader (
-         *      -> FileLoader will get the corresponding parser (i.e XMLParser) and load the file depending on that
+         *      -> FileLoader will get the corresponding parser (i.e. XMLParser) and load the file depending on that
          */
 
         FileLoader<XMLParser> loader = new FileLoader<>(new XMLParser(), 1);
