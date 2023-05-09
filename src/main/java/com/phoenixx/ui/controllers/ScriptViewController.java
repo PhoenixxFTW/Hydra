@@ -3,10 +3,10 @@ package com.phoenixx.ui.controllers;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.JFXTreeViewPath;
-import com.phoenixx.core.Action;
-import com.phoenixx.core.Step;
-import com.phoenixx.core.Transaction;
-import com.phoenixx.core.VugenScript;
+import com.phoenixx.core.script.Action;
+import com.phoenixx.core.script.Step;
+import com.phoenixx.core.script.Transaction;
+import com.phoenixx.core.script.impl.VugenScript;
 import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
 import javafx.beans.binding.Bindings;
@@ -50,7 +50,7 @@ public class ScriptViewController {
         this.vugenScript = vugenScript;
 
         //final JFXTreeView projectManagerTree = new JFXTreeView<>();
-        FilterableTreeItem<String> rootNode = new FilterableTreeItem<>(this.vugenScript.getScriptFolder().getName());
+        FilterableTreeItem<String> rootNode = new FilterableTreeItem<>(this.vugenScript.getScriptFile().getScriptFolder().getName());
         rootNode.setExpanded(true);
 
         // TODO Load all script data into window

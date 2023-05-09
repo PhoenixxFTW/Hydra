@@ -1,7 +1,7 @@
 package com.phoenixx.ui.controllers;
 
 import com.phoenixx.HydraApp;
-import com.phoenixx.core.VugenScript;
+import com.phoenixx.core.script.impl.VugenScript;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,7 +50,7 @@ public class LoadScriptController {
         if (selectedFile != null) {
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 
-            VugenScript loadedScript = HydraApp.getInstance().loadScript(selectedFile);
+            VugenScript loadedScript = HydraApp.getInstance().getScriptManager().loadScript(selectedFile);
 
             if(loadedScript != null) {
                 // Load the script editing scene
