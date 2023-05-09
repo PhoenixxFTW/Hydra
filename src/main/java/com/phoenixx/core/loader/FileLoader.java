@@ -2,7 +2,6 @@ package com.phoenixx.core.loader;
 
 import com.phoenixx.core.loader.parser.AbstractParser;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,6 +14,7 @@ public class FileLoader<T extends AbstractParser<?>> {
     private final T parser;
     private final ExecutorService executor;
 
+    //TODO Add callback so that once a file is loaded, we can do something with it
     public FileLoader(T parser, int numThreads) {
         this.parser = parser;
         this.executor = Executors.newFixedThreadPool(numThreads);
