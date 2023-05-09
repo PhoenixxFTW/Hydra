@@ -1,4 +1,4 @@
-package com.phoenixx.script;
+package com.phoenixx.core.script;
 
 import com.phoenixx.util.Parser;
 

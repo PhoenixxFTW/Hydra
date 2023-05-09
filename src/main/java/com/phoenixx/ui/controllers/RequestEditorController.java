@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import com.phoenixx.script.Step;
+import com.phoenixx.core.script.Step;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

@@ -1,14 +1,11 @@
 package com.phoenixx;
 
-import com.phoenixx.script.VugenScript;
+import com.phoenixx.core.ScriptManager;
 import com.phoenixx.ui.HydraWindow;
 import com.phoenixx.ui.HydraWindowThread;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author Junaid Talpur
@@ -23,12 +20,14 @@ public class HydraApp {
     public static final boolean DEBUG_ENV = true;
 
     public static String currentPath;
-    public final List<VugenScript> loadedScripts = new ArrayList<>();
+
+    private final ScriptManager scriptManager;
 
     private static HydraApp instance;
 
     public HydraApp() throws Exception {
         instance = this;
+        this.scriptManager = new ScriptManager();
 
         // Create an instance of the HydraWindow which is the main display for the hydra client
         HydraWindow hydraWindow = new HydraWindow();
@@ -60,8 +59,7 @@ public class HydraApp {
             folder = folder.getParentFile();
         }
 
-
-
+   */
         // TODO
         /**
          * 1) Read in all the action files and connect the transactions to the snapshots IDs
@@ -71,29 +69,8 @@ public class HydraApp {
 
     }
 
-    public VugenScript loadScript(File file) throws IOException {
-        System.out.println("UPDATED PATH: " + file.getAbsolutePath());
-
-        if(!file.isDirectory()) {
-            System.out.println("Current location is not a valid Vugen file!");
-            return null;
-        }
-
-        if(!DEBUG_ENV) {
-            if (!file.getName().contains(".usr")) {
-                System.out.println("File does not end in .usr!");
-                return null;
-            }
-        }
-
-        if(Objects.requireNonNull(file.list()).length == 0) {
-            System.out.println("No scripts found in folder: " + file.getName());
-            return null;
-        }
-        VugenScript vugenScript = new VugenScript(file);
-        this.loadedScripts.add(vugenScript);
-
-        return vugenScript;
+    public ScriptManager getScriptManager() {
+        return scriptManager;
     }
 
     public static HydraApp getInstance() {
