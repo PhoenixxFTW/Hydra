@@ -2,10 +2,13 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -45,11 +48,29 @@
                   </JFXButton>
                </children>
             </HBox>
-            <JFXTextArea fx:id="textArea" prefHeight="419.0" prefWidth="999.0" promptText="Request " style="-fx-text-fill: white;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </JFXTextArea>
+            <JFXTabPane fx:id="requestTabPane" stylesheets="@css/fullpackstyling.css" VBox.vgrow="ALWAYS">
+               <tabs>
+                  <Tab text="Headers">
+                    <content>
+                        <HBox>
+                           <children>
+                              <JFXTreeTableView fx:id="jfxTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                    </content>
+                  </Tab>
+                  <Tab text="Cookies">
+                    <content>
+                      <AnchorPane fx:id="cookiesPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+                  <Tab text="Body">
+                    <content>
+                      <AnchorPane fx:id="bodyPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
          </children>
       </VBox>
    </children>

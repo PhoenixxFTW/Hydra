@@ -300,3 +300,30 @@
     -fx-prompt-text-fill: lightgrey;
     -fx-background-color: #4b5866;
 }
+
+.jfx-tab-pane .tab-header-area .tab-header-background {
+    /*-fx-opacity: 0.0;*/
+    -fx-background-color: #22272e;
+}
+
+.jfx-check-box .box {
+    -fx-pref-height: 20;
+    -fx-pref-width: 20;
+}
+
+.jfx-check-box .mark {
+    -fx-max-width: 25;
+    -fx-max-height: 20;
+}
+
+.tree-table-row-cell {
+    -fx-border-color: lightgray;
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-height: 30;
+}
+
+.tree-table-cell {
+    -fx-border-color: lightgray;
+    -fx-border-width: 0 1 0 0;
+    -fx-pref-height: 30;
+}

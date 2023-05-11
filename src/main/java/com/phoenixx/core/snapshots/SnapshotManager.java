@@ -49,11 +49,8 @@ public class SnapshotManager {
 
         loader.setOnFinish(xmlParser -> {
             Document document = xmlParser.getDataObject();
-            //String hostName = document.getElementsByTagName("HTTPTask").item(0).getTextContent();
 
-            //System.out.println("Host name: " + hostName);
-
-            System.out.println("Parsed and loaded: " + xmlParser.getFileName());
+            //System.out.println("Parsed and loaded: " + xmlParser.getFileName());
             if(document == null) {
                 System.out.println("FAILURE! " + xmlParser.getFileName() + " DOCUMENT WAS NULL @@@@@ ");
                 return;

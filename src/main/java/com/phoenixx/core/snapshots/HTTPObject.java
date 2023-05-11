@@ -22,14 +22,14 @@ public class HTTPObject {
 
     private String body;
 
-    private final Map<String, String> headers;
-    private final Map<String, String> cookies;
+    private final Map<String, QueryObj> headers;
+    private final Map<String, QueryObj> cookies;
 
     public HTTPObject(String host, String path) {
         this(host, path, new HashMap<>(), new HashMap<>());
     }
 
-    public HTTPObject(String host, String path, Map<String, String> headers, Map<String, String> cookies) {
+    public HTTPObject(String host, String path, Map<String, QueryObj> headers, Map<String, QueryObj> cookies) {
         this.host = host;
         this.path = path;
         this.headers = headers;
@@ -44,9 +44,8 @@ public class HTTPObject {
      */
     public static HTTPObject buildObject(String host, String url, NodeList nodeList) {
         HTTPObject httpObject = new HTTPObject(host, url);
-
-        System.out.println("Hostname: " + host);
-        System.out.println("URL: " + url);
+        /*System.out.println("Hostname: " + host);
+        System.out.println("URL: " + url);*/
 
         for (int j = 0; j < nodeList.getLength(); j++) {
             Node httpRequestNode = nodeList.item(j);
@@ -65,9 +64,9 @@ public class HTTPObject {
                             String actualData = actualDataList.item(0).getTextContent();
                             //System.out.println("HTTPHeaderEntity Name: " + name + ", ActualData: " + actualData);
                             if(!httpHeaderEntityNode.getParentNode().getNodeName().equalsIgnoreCase("HTTPCookies")) {
-                                httpObject.headers.put(name, Parser.decodeBase64Val(actualData));
+                                httpObject.headers.put(name, new QueryObj(name, Parser.decodeBase64Val(actualData)));
                             } else {
-                                httpObject.cookies.put(name, Parser.decodeBase64Val(actualData));
+                                httpObject.cookies.put(name, new QueryObj(name, Parser.decodeBase64Val(actualData)));
                             }
                         }
                     }
@@ -86,47 +85,9 @@ public class HTTPObject {
                     //System.out.println("HTTPBody ActualData: " + decodedString);
 
                     httpObject.body = Parser.decodeBase64Val(actualData);
-
-                    //System.out.println("DATA ELEMENT: " + dataElement.getNodeName());
-
-                    /*String actualData = data.item(0).getTextContent();
-
-                    httpObject.body = Parser.decodeBase64Val(actualData);*/
                 }
             }
         }
-
-       /* for (int j = 0; j < nodeList.getLength(); j++) {
-            Node httpRequestNode = nodeList.item(j);
-            if (httpRequestNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element httpRequestElement = (Element) httpRequestNode;
-
-                NodeList httpHeadersList = httpRequestElement.getElementsByTagName("HTTPHeaders");
-                for (int k = 0; k < httpHeadersList.getLength(); k++) {
-                    Node httpHeadersNode = httpHeadersList.item(k);
-                    if (httpHeadersNode.getNodeType() == Node.ELEMENT_NODE) {
-                        NodeList children = httpHeadersNode.getChildNodes();
-                        for (int l = 0; l < children.getLength(); l++) {
-                            Node child = children.item(l);
-                            if (child.getNodeType() == Node.ELEMENT_NODE && child.getNodeName().equals("HTTPHeaderEntity")) {
-                                Element httpHeaderEntityElement = (Element) child;
-                                String name = httpHeaderEntityElement.getAttribute("name");
-
-                                NodeList actualDataList = httpHeaderEntityElement.getElementsByTagName("ActualData");
-                                if (actualDataList.getLength() > 0) {
-                                    String actualData = actualDataList.item(0).getTextContent();
-                                    //System.out.println("HTTPHeaderEntity Name: " + name + ", ActualData: " + actualData);
-
-                                    httpObject.headers.put(name, Parser.decodeBase64Val(actualData));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-
-
         return httpObject;
     }
 
@@ -147,11 +108,11 @@ public class HTTPObject {
         return this.body;
     }
 
-    public Map<String, String> getHeaders() {
+    public Map<String, QueryObj> getHeaders() {
         return this.headers;
     }
 
-    public Map<String, String> getCookies() {
+    public Map<String, QueryObj> getCookies() {
         return this.cookies;
     }
 

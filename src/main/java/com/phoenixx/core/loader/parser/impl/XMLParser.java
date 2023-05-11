@@ -31,6 +31,7 @@ public class XMLParser extends AbstractParser<Document> {
     @Override
     public XMLParser parse(String fileName, InputStream stream) {
         try {
+            this.fileName = fileName;
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             this.doc = dBuilder.parse(stream);
