@@ -1,6 +1,7 @@
 package com.phoenixx.core.script;
 
 import com.phoenixx.core.protocol.IProtocol;
+import com.phoenixx.core.snapshots.SnapshotManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +19,7 @@ public abstract class AbstractScript implements IScript {
 
     private final String name;
     private final ScriptFile scriptFile;
+    private final SnapshotManager snapshotManager;
 
     private final List<Action> actions;
     private final List<IProtocol> protocols;
@@ -33,6 +35,8 @@ public abstract class AbstractScript implements IScript {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.snapshotManager = new SnapshotManager(this);
     }
 
     /**
@@ -60,6 +64,11 @@ public abstract class AbstractScript implements IScript {
 
             this.actions.add(new Action(actionFile, lines));
         }
+    }
+
+    @Override
+    public SnapshotManager getSnapshotManager() {
+        return this.snapshotManager;
     }
 
     @Override

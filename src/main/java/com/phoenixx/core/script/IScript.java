@@ -1,6 +1,7 @@
 package com.phoenixx.core.script;
 
 import com.phoenixx.core.protocol.IProtocol;
+import com.phoenixx.core.snapshots.SnapshotManager;
 
 import java.util.List;
 
@@ -16,6 +17,12 @@ public interface IScript {
      * @return {@link String} Script name
      */
     String getName();
+
+    /**
+     * Instance of the {@link SnapshotManager} assigned to this script. Contains all the information regarding snapshots
+     * @return {@link SnapshotManager}
+     */
+    SnapshotManager getSnapshotManager();
 
     /**
      * Instance of {@link ScriptFile} which contains data about all the current scripts files (action files, configs etc)

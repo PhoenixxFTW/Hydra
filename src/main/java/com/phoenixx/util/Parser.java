@@ -1,5 +1,7 @@
 package com.phoenixx.util;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +25,7 @@ public class Parser {
 
     /**
      * Returns the regex value searched for if it exists, otherwise returns Null
+     *
      * @param input The given input string to search
      * @param regex The regex query
      * @return The string retrieved if found, or Null
@@ -39,5 +42,16 @@ public class Parser {
             return matcher.group(1);
         }
         return null;
+    }
+
+    /**
+     * Takes in a Base64 encoded string and returns the decoded UTF-8 value.
+     *
+     * @param encodedVal The base64 string to decode
+     * @return Decoded UTF-8 {@link String}
+     */
+    public static String decodeBase64Val(String encodedVal) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedVal);
+        return new String(decodedBytes, StandardCharsets.UTF_8);
     }
 }

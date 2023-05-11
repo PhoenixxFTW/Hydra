@@ -1,4 +1,4 @@
-package com.phoenixx.core;
+package com.phoenixx.core.script;
 
 import com.phoenixx.HydraApp;
 import com.phoenixx.core.loader.FileLoader;
@@ -6,7 +6,6 @@ import com.phoenixx.core.loader.parser.impl.XMLParser;
 import com.phoenixx.core.protocol.IProtocol;
 import com.phoenixx.core.protocol.ProtocolManager;
 import com.phoenixx.core.protocol.ProtocolTypes;
-import com.phoenixx.core.script.ScriptFile;
 import com.phoenixx.core.script.impl.VugenScript;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,7 +58,7 @@ public class ScriptManager {
         /**
          * ======= THEORY =======
          * 1) Pass the "ScriptUploadMetadata.xml" into the FileLoader (
-         *      -> FileLoader will get the corresponding parser (i.e XMLParser) and load the file depending on that
+         *      -> FileLoader will get the corresponding parser (i.e. XMLParser) and load the file depending on that
          */
 
         FileLoader<XMLParser> loader = new FileLoader<>(new XMLParser(), 1);

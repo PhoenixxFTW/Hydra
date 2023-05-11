@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class XMLParser extends AbstractParser<Document> {
 
+    private String fileName;
     private Document doc;
 
     public XMLParser() {
@@ -28,7 +29,7 @@ public class XMLParser extends AbstractParser<Document> {
     }
 
     @Override
-    public void parse(InputStream stream) {
+    public XMLParser parse(String fileName, InputStream stream) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -37,6 +38,7 @@ public class XMLParser extends AbstractParser<Document> {
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
+        return this;
     }
 
     // Retrieve a list of elements by tag name
@@ -58,5 +60,10 @@ public class XMLParser extends AbstractParser<Document> {
     @Override
     public Document getDataObject() {
         return this.doc;
+    }
+
+    @Override
+    public String getFileName() {
+        return fileName;
     }
 }
