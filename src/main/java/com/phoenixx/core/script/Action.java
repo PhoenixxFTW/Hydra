@@ -49,14 +49,14 @@ public class Action {
             if(currentTransaction == null) {
                 String foundTransaction = Parser.regexCheck(line, Parser.TRANSACTION_START);
                 if(foundTransaction != null) {
-                    System.out.println("FOUND THE START TRANSACTION NAME: " + foundTransaction);
+                    //System.out.println("FOUND THE START TRANSACTION NAME: " + foundTransaction);
                     currentTransaction = new Transaction(foundTransaction);
                 }
             } else {
                 // Detect the end of a transaction with regex
                 String foundTransaction = Parser.regexCheck(line, Parser.TRANSACTION_END);
                 if(foundTransaction != null) {
-                    System.out.println("FOUND THE END TRANSACTION NAME: " + foundTransaction);
+                    //System.out.println("FOUND THE END TRANSACTION NAME: " + foundTransaction);
                     // Finish off the transaction and add it to the list
                     this.transactions.add(currentTransaction);
                     currentTransaction = null;
@@ -93,7 +93,7 @@ public class Action {
                         // End of the current Step
                         if(line.trim().equals("LAST);")) {
                             currentTransaction.getSteps().add(currentStep);
-                            System.out.println("Finished step: " + currentStep.getStepName() + " with steps: \n"+currentStep.getStepData());
+                            //System.out.println("Finished step: " + currentStep.getStepName() + " with steps: \n"+currentStep.getStepData());
                             currentStep = null;
                         } else {
                             line = line.trim();

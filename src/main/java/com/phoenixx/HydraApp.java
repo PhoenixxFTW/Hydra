@@ -1,11 +1,8 @@
 package com.phoenixx;
 
-import com.phoenixx.core.ScriptManager;
+import com.phoenixx.core.script.ScriptManager;
 import com.phoenixx.ui.HydraWindow;
 import com.phoenixx.ui.HydraWindowThread;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Junaid Talpur

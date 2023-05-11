@@ -14,7 +14,9 @@ public abstract class AbstractParser<T> {
         super();
     }
 
-    public abstract void parse(InputStream stream);
+    public abstract AbstractParser<T> parse(String fileName, InputStream stream);
 
     public abstract T getDataObject();
+
+    public abstract String getFileName();
 }

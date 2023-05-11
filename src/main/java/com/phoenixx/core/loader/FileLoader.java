@@ -17,7 +17,6 @@ public class FileLoader<T extends AbstractParser<?>> {
 
     private Consumer<T> onFinish;
 
-    //TODO Add callback so that once a file is loaded, we can do something with it
     public FileLoader(T parser, int numThreads) {
         this.parser = parser;
         this.executor = Executors.newFixedThreadPool(numThreads);
@@ -27,15 +26,17 @@ public class FileLoader<T extends AbstractParser<?>> {
         for (String fileName: fileNames) {
             this.executor.execute(() -> {
                 try (InputStream inputStream = Files.newInputStream(Paths.get(fileName))) {
-                    this.parser.parse(inputStream);
+                    @SuppressWarnings("unchecked") T parser = (T) this.parser.parse(fileName, inputStream);
+
+                    // Callback with the parser passed in so the parent class can do whatever with the current file
+                    if(this.onFinish != null) {
+                        this.onFinish.accept(parser);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
-            // Callback with the parser passed in so the parent class can do whatever with the current file
-            if(this.onFinish != null) {
-                this.onFinish.accept(this.parser);
-            }
+
         }
         this.executor.shutdown();
         try {

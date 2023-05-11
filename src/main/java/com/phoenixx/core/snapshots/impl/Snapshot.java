@@ -34,4 +34,13 @@ public class Snapshot extends ISnapshot {
     public HTTPObject getResponse() {
         return this.response;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("------ Request #").append(this.getID()).append(" ------").append("\n");
+        builder.append("Request: \n").append(this.getRequest()).append("\n\n");
+        builder.append("Response: \n").append(this.getResponse()).append("\n");
+        return builder.toString();
+    }
 }
