@@ -21,6 +21,21 @@ public class Step {
         this.stepData = new ArrayList<>();
     }
 
+    //FIXME This is only for testing purposes
+    public int getSnapshotId() {
+        for(String line: this.stepData) {
+            if(line.startsWith("Snapshot=")) {
+                String snapshotVal = line.split("=")[1];
+                // Remove the "t" character in front of the number
+                snapshotVal = snapshotVal.substring(1);
+                // Remove the file extension
+                snapshotVal = snapshotVal.substring(0, snapshotVal.length() - 4);
+                return Integer.parseInt(snapshotVal);
+            }
+        }
+        return -1;
+    }
+
     public String getStepName() {
         return stepName;
     }

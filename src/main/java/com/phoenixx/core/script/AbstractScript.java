@@ -40,7 +40,7 @@ public abstract class AbstractScript implements IScript {
     }
 
     /**
-     * //TODO This needs to be redone, we need to utilize the {@link com.phoenixx.core.loader.FileLoader} and {@link com.phoenixx.script.parser.IParser}
+     * //TODO This needs to be redone, we need to utilize the {@link com.phoenixx.core.loader.FileLoader} and {@link com.phoenixx.core.loader.IParser}
      * @throws IOException
      */
     @Deprecated

@@ -21,6 +21,8 @@ public class SnapshotManager {
 
     private final Map<Integer,ISnapshot> snapshotMap;
 
+    private final static String SNAPSHOT_REGEX = "snapshot_\\d+\\.xml";
+
     public SnapshotManager(IScript script) {
         this.snapshotMap = new TreeMap<>();
 
@@ -29,13 +31,12 @@ public class SnapshotManager {
     }
 
     private void loadSnapshots(File folder) {
-        System.out.println("Snapshot path locatoin: " + folder.getAbsolutePath());
-        final String regex = "snapshot_\\d+\\.xml";
+        System.out.println("Snapshot path location: " + folder.getAbsolutePath());
 
         List<String> snapshotFiles = new ArrayList<>();
         for (File file: Objects.requireNonNull(folder.listFiles())) {
-            if(file.getName().matches(regex)) {
-                System.out.println("Found snapshot file: " + file.getName());
+            if(file.getName().matches(SNAPSHOT_REGEX)) {
+                //System.out.println("Found snapshot file: " + file.getName());
                 snapshotFiles.add(folder.getAbsolutePath() + "\\" + file.getName());
             }
         }
@@ -68,8 +69,6 @@ public class SnapshotManager {
                     Element httpTaskElement = (Element) httpTaskNode;
                     String hostname = httpTaskElement.getAttribute("hostname");
                     String url = httpTaskElement.getAttribute("url");
-                    //System.out.println("Hostname: " + hostname);
-                    //System.out.println("URL: " + url);
 
                     NodeList httpRequestList = httpTaskElement.getElementsByTagName("HTTPRequest");
                     NodeList httpResponseList = httpTaskElement.getElementsByTagName("HTTPResponse");
@@ -80,7 +79,7 @@ public class SnapshotManager {
                     Snapshot snapshot = new Snapshot(snapshotID, requestObj, responseObj);
                     this.snapshotMap.put(snapshotID, snapshot);
 
-                    System.out.println("SNAPSHOT #" + snapshotID + " LOADED!");
+                    //System.out.println("SNAPSHOT #" + snapshotID + " LOADED!");
                     //System.out.println(snapshot);
                 }
             }
@@ -88,8 +87,18 @@ public class SnapshotManager {
 
         loader.loadFiles(fileArray);
 
-        System.out.println("OUTPUTTING SNAPSHOT 30: ");
-        System.out.println("SNAPSHOT: " + this.snapshotMap.get(30));
+        /*System.out.println("OUTPUTTING SNAPSHOT 30: ");
+        System.out.println("SNAPSHOT: " + this.snapshotMap.get(30));*/
+    }
+
+    /**
+     * Retrieves and returns the {@link Snapshot} with the given ID
+     *
+     * @param id The id of the {@link Snapshot} to look for
+     * @return {@link Snapshot}
+     */
+    public Snapshot getSnapshot(int id) {
+        return (Snapshot) this.getSnapshotMap().getOrDefault(id, null);
     }
 
     public Map<Integer, ISnapshot> getSnapshotMap() {
