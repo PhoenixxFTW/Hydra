@@ -84,8 +84,59 @@ public class SnapshotManager {
 
         loader.loadFiles(fileArray);
 
+        //this.getPreReqs(30);
+
         /*System.out.println("OUTPUTTING SNAPSHOT 30: ");
         System.out.println("SNAPSHOT: " + this.snapshotMap.get(30));*/
+    }
+
+    /**
+     * //TODO
+     * This method will retrieve all pre-requisite requests that were made before this snapshot.
+     * Using this, we can find the similarities between the requests in order to find correlations / parameterization.
+     *
+     * ------ THEORY ------
+     * 1) Thread gets called to look through all snapshots before this one (i.e if current snapshot ID is 50, look for snapshots 49 and under)
+     * 2) Check if snapshot has any header, or cookie values that match with the data in current snapshot.
+     * 3) Since we will have a parser for JSON, and other data types. We can use that to our advantage when searching the body for the request
+     *      -> The body will be seperated into key value pairs in order to find the values that match between the 2 snapshots
+     */
+    public void getPreReqs(int snapshotID) {
+        Snapshot currentSnapshot = this.getSnapshot(snapshotID);
+        if(currentSnapshot == null) {
+            return;
+        }
+
+        List<String> matches = new ArrayList<>();
+
+        // Loop through all snapshots before the current one
+        for(int i = snapshotID - 1; i >= 0; i--) {
+            Snapshot otherSnapshot = this.getSnapshot(i);
+
+            if (otherSnapshot == null) {
+                continue;
+            }
+
+            int finalI = i;
+            currentSnapshot.getRequest().getHeaders().forEach((key1, queryObj1) -> {
+                otherSnapshot.getResponse().getHeaders().forEach((key2, queryObj2) -> {
+                    if(queryObj1.getVal().equals(queryObj2.getVal())) {
+                        matches.add(queryObj2.getVal() + " | " + finalI);
+                    }
+                });
+            });
+
+            /*currentSnapshot.getRequest().getCookies().forEach((key1, queryObj1) -> {
+                otherSnapshot.getResponse().getCookies().forEach((key2, queryObj2) -> {
+                    if(queryObj1.getVal().equals(queryObj2.getVal())) {
+                        matches.add(queryObj2.getVal() + " | " + finalI);
+                    }
+                });
+            });*/
+        }
+
+        //System.out.println("ALL MATCHES: " + matches.size());
+        //matches.forEach(s -> System.out.println(" -> " + s));
     }
 
     /**

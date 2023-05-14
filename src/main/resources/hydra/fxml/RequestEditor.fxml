@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -66,7 +67,18 @@
                   </Tab>
                   <Tab text="Body">
                     <content>
-                      <AnchorPane fx:id="bodyPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <HBox>
+                           <children>
+                              <JFXTextArea fx:id="bodyArea" styleClass="BodyTextArea" stylesheets="@css/fullpackstyling.css" text="test" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </JFXTextArea>
+                           </children>
+                        </HBox>
                     </content>
                   </Tab>
                </tabs>

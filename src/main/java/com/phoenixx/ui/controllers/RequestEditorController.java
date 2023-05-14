@@ -30,6 +30,7 @@ public class RequestEditorController {
     public AnchorPane cookiesPane;
     public AnchorPane bodyPane;
     public JFXTreeTableView jfxTable;
+    public JFXTextArea bodyArea;
 
     @FXML
     public void initialize() {
@@ -39,14 +40,14 @@ public class RequestEditorController {
     public void updateRequestEditor(Step step) {
         System.out.println("CLICKED ON STEP: " + step.getStepName());
         addressBar.setText(step.getStepName());
-        requestNameLabel.setText(step.getStepName());
 
         VugenScript vugenScript = HydraApp.getInstance().getScriptManager().getLoadedScript();
         Snapshot snapshot = vugenScript.getSnapshotManager().getSnapshot(step.getSnapshotId());
 
-        System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
+        //System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
 
         addressBar.setText(snapshot.getRequest().getPath());
+        requestNameLabel.setText(step.getStepName() +"(ID: " + snapshot.getID() + ")");
         //headersPane.setText(snapshot.getRequest().getBody());
 
         JFXTreeTableColumn<QueryObj, Boolean> enabledColumn = new JFXTreeTableColumn<>("Enabled");
@@ -57,11 +58,13 @@ public class RequestEditorController {
         JFXTreeTableColumn<QueryObj, String> keyColumn = new JFXTreeTableColumn<>("Key");
         keyColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getKey()));
 
-
         JFXTreeTableColumn<QueryObj, String> valColumn = new JFXTreeTableColumn<>("Value");
         valColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getVal()));
+        valColumn.prefWidthProperty().set(700);
 
         jfxTable.getColumns().setAll(enabledColumn, keyColumn, valColumn);
+
+        bodyArea.setText(snapshot.getRequest().getBody());
 
         // Fake root
         TreeItem<QueryObj> root = new TreeItem<>(new QueryObj("testKey", "testVal"));

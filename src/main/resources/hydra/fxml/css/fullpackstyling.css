@@ -327,3 +327,7 @@
     -fx-border-width: 0 1 0 0;
     -fx-pref-height: 30;
 }
+
+.BodyTextArea {
+    -fx-text-fill: lightgray;
+}
