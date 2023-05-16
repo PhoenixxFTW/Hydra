@@ -168,15 +168,15 @@ public class SnapshotManager {
 
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
+        // Loop through the snapshot that will be used to compare to the others
         for (JsonObject firstObj : firstObjects) {
+            // Loop through the searching snapshots (all snapshots that came before the one the user selected)
             for (Snapshot searchingSnapshot : jsonObjects.keySet()) {
-
+                // Since the body data can have an array element, we loop for multiple json objects just in case
                 for (JsonObject secondObj : jsonObjects.get(searchingSnapshot)) {
-
+                    // Now the fun begins, this is where the elements / values from the first snapshot are looped over
                     for (Map.Entry<String, JsonElement> entry1 : firstObj.entrySet()) {
-
                         for (Map.Entry<String, JsonElement> entry2 : secondObj.entrySet()) {
-
                             if (entry1.getKey().equals(entry2.getKey())) {
                                 if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive()) {
                                     String value1 = entry1.getValue().getAsString();
