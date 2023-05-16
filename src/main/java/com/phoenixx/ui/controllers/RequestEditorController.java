@@ -75,5 +75,7 @@ public class RequestEditorController {
         jfxTable.setRoot(root);
         // Hides the dummy root
         jfxTable.setShowRoot(false);
+
+        vugenScript.getSnapshotManager().getPreReqs(snapshot.getID());
     }
 }

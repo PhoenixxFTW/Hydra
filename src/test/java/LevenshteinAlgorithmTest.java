@@ -20,58 +20,19 @@ public class LevenshteinAlgorithmTest {
 
 
         DataObj httpObject = new DataObj();
-        httpObject.setBody("{\n" +
-                "    \"_id\": \"6463969d293ec28993deac4c\",\n" +
-                "    \"index\": 0,\n" +
-                "    \"guid\": \"08c69379-b866-4074-a8f5-9e27eaec8590\",\n" +
-                "    \"isActive\": true,\n" +
-                "    \"balance\": \"$2,867.99\",\n" +
-                "    \"picture\": \"http://placehold.it/32x32\",\n" +
-                "    \"age\": 32,\n" +
-                "    \"eyeColor\": \"blue\",\n" +
-                "    \"name\": \"Byrd Estes\",\n" +
-                "    \"gender\": \"male\",\n" +
-                "    \"company\": \"OPTIQUE\",\n" +
-                "    \"email\": \"byrdestes@optique.com\",\n" +
-                "    \"phone\": \"+1 (804) 520-2682\"\n" +
-                "  }");
-
+        httpObject.setBody("{\"stateToken\":\"00g9fOSgpK2XUXAoJ5kmaKKT8s94KoL68zlCXiOY7E\",\"type\":\"SESSION_STEP_UP\",\"expiresAt\":\"2023-04-05T17:41:58.000Z\",\"status\":\"SUCCESS\",\"_embedded\":{\"user\":{\"id\":\"00u8xqs7yjxddNfpg5d7\",\"passwordChanged\":\"2023-03-31T16:09:43.000Z\",\"profile\":{\"login\":\"SPxdbalgyfeuwlnpnx@yopmail.com\",\"firstName\":null,\"lastName\":null,\"locale\":\"en_US\",\"timeZone\":\"America/Los_Angeles\"}},\"target\":{\"type\":\"APP\",\"name\":\"stage-ontsignin_froonlinebofenligneppeapp_1\",\"label\":\"FRO Online / BOF en ligne [PPE] APP\",\"_links\":{\"logo\":{\"name\":\"medium\",\"href\":\"https://ok12static.oktacdn.com/assets/img/logos/default.6770228fb0dab49a1695ef440a5279bb.png\",\"type\":\"image/png\"}}},\"authentication\":{\"protocol\":\"SAML2.0\",\"issuer\":{\"id\":\"0oa4o4hntgMSsoIO25d7\",\"name\":\"FRO Online / BOF en ligne [PPE] APP\",\"uri\":\"http://www.okta.com/exk4o4hntfw81OmCo5d7\"}}},\"_links\":{\"next\":{\"name\":\"original\",\"href\":\"https://stage.signin.ontario.ca/login/step-up/redirect?stateToken=00g9fOSgpK2XUXAoJ5kmaKKT8s94KoL68zlCXiOY7E\",\"hints\":{\"allow\":[\"GET\"]}},\"cancel\":{\"href\":\"https://stage.signin.ontario.ca/api/v1/authn/cancel\",\"hints\":{\"allow\":[\"POST\"]}}}}");
         requests.add(httpObject);
 
         httpObject = new DataObj();
-        httpObject.setBody("{\n" +
-                "    \"_id\": \"6463969ddc0245c90c6e0513\",\n" +
-                "    \"index\": 1,\n" +
-                "    \"guid\": \"489b0217-ad65-4c65-88b7-1557904b2413\",\n" +
-                "    \"isActive\": false,\n" +
-                "    \"balance\": \"$2,069.87\",\n" +
-                "    \"picture\": \"http://placehold.it/32x32\",\n" +
-                "    \"age\": 33,\n" +
-                "    \"eyeColor\": \"green\",\n" +
-                "    \"name\": \"Freida Briggs\",\n" +
-                "    \"gender\": \"female\",\n" +
-                "    \"company\": \"MAGNINA\",\n" +
-                "    \"email\": \"freidabriggs@magnina.com\",\n" +
-                "    \"phone\": \"+1 (820) 590-3556\"\n" +
-                "  }");
+        httpObject.setBody("{\"password\":\"fCMS_123!\",\"username\":\"SPxdbalgyfeuwlnpnx@yopmail.com\",\"options\":{\"warnBeforePasswordExpired\":true,\"multiOptionalFactorEnroll\":true},\"stateToken\":\"00g9fOSgpK2XUXAoJ5kmaKKT8s94KoL68zlCXiOY7E\"}");
         requests.add(httpObject);
 
         httpObject = new DataObj();
-        httpObject.setBody("{\n" +
-                "    \"_id\": \"6463969da850d5678c0d66c4\",\n" +
-                "    \"index\": 2,\n" +
-                "    \"guid\": \"8aceaf88-5d88-49bd-a01e-be7157831f1c\",\n" +
-                "    \"isActive\": false,\n" +
-                "    \"balance\": \"$2,251.09\",\n" +
-                "    \"picture\": \"http://placehold.it/32x32\",\n" +
-                "    \"age\": 34,\n" +
-                "    \"eyeColor\": \"blue\",\n" +
-                "    \"name\": \"Yesenia Bernard\",\n" +
-                "    \"gender\": \"female\",\n" +
-                "    \"company\": \"ILLUMITY\",\n" +
-                "    \"email\": \"yeseniabernard@illumity.com\",\n" +
-                "    \"phone\": \"+1 (920) 559-2800\"\n" +
-                "  }");
+        httpObject.setBody("{\"nonce\":\"Kr6joNjBbhJaFV02k3V1rdc-Bj_Jl0ac\",\"expiresAt\":1680716247499}");
+        requests.add(httpObject);
+
+        httpObject = new DataObj();
+        httpObject.setBody("{\"stateToken\":\"00g9fOSgpK2XUXAoJ5kmaKKT8s94KoL68zlCXiOY7E\"}");
         requests.add(httpObject);
 
         // The lower this threshold is, the more precise value the algorithm will look for.

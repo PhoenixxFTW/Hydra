@@ -1,9 +1,13 @@
 package com.phoenixx.core.snapshots;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.phoenixx.core.loader.FileLoader;
 import com.phoenixx.core.loader.parser.impl.XMLParser;
 import com.phoenixx.core.script.IScript;
 import com.phoenixx.core.snapshots.impl.Snapshot;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -76,7 +80,7 @@ public class SnapshotManager {
                     Snapshot snapshot = new Snapshot(snapshotID, requestObj, responseObj);
                     this.snapshotMap.put(snapshotID, snapshot);
 
-                    //System.out.println("SNAPSHOT #" + snapshotID + " LOADED!");
+                    System.out.println("SNAPSHOT #" + snapshotID + " LOADED!");
                     //System.out.println(snapshot);
                 }
             }
@@ -103,36 +107,52 @@ public class SnapshotManager {
      */
     public void getPreReqs(int snapshotID) {
         Snapshot currentSnapshot = this.getSnapshot(snapshotID);
-        if(currentSnapshot == null) {
+        if(currentSnapshot == null || (currentSnapshot.getRequest() == null || currentSnapshot.getRequest().contentType == null || currentSnapshot.getRequest().getBody() == null || !currentSnapshot.getRequest().contentType.equalsIgnoreCase("application/json"))) {
             return;
         }
 
-        List<String> matches = new ArrayList<>();
+        Map<Snapshot, JsonObject> jsonObjects = new HashMap<>();
+
+        Gson gson = new Gson();
+        String jsonData = currentSnapshot.getRequest().getBody();
+        System.out.println("CONVERTING MAIN @@@@@@@@@@ JSON DATA TO OBJ: " + jsonData);
+        JsonObject firstObj = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonObject.class);
 
         // Loop through all snapshots before the current one
         for(int i = snapshotID - 1; i >= 0; i--) {
             Snapshot otherSnapshot = this.getSnapshot(i);
 
-            if (otherSnapshot == null) {
+            if (otherSnapshot == null || (otherSnapshot.getRequest() == null || otherSnapshot.getRequest().contentType == null || otherSnapshot.getRequest().getBody() == null || !otherSnapshot.getRequest().contentType.equalsIgnoreCase("application/json"))) {
+                //System.out.println("Snapshot #"+i + " request was null @@");
                 continue;
             }
 
-            int finalI = i;
-            currentSnapshot.getRequest().getHeaders().forEach((key1, queryObj1) -> {
-                otherSnapshot.getResponse().getHeaders().forEach((key2, queryObj2) -> {
-                    if(queryObj1.getVal().equals(queryObj2.getVal())) {
-                        matches.add(queryObj2.getVal() + " | " + finalI);
-                    }
-                });
-            });
+            jsonData = otherSnapshot.getRequest().getBody();
+            System.out.println("#" + i + ") CONVERT JSON DATA TO OBJ: " + jsonData);
+            JsonObject jsonObject = gson.fromJson(otherSnapshot.getRequest().getBody(), JsonObject.class);
+            System.out.println("JSON OBJ " + jsonObject);
+            jsonObjects.put(otherSnapshot, jsonObject);
+            //System.out.println("FULL SNAPSHOT: " + otherSnapshot.toString());
+        }
 
-            /*currentSnapshot.getRequest().getCookies().forEach((key1, queryObj1) -> {
-                otherSnapshot.getResponse().getCookies().forEach((key2, queryObj2) -> {
-                    if(queryObj1.getVal().equals(queryObj2.getVal())) {
-                        matches.add(queryObj2.getVal() + " | " + finalI);
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
+        for(Snapshot searchingSnapshot: jsonObjects.keySet()) {
+            JsonObject secondObj = jsonObjects.get(searchingSnapshot);
+
+            for (Map.Entry<String, JsonElement> entry1 : firstObj.entrySet()) {
+                for (Map.Entry<String, JsonElement> entry2 : secondObj.entrySet()) {
+                    if (entry1.getKey().equals(entry2.getKey())) {
+                        if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive()) {
+                            String value1 = entry1.getValue().getAsString();
+                            String value2 = entry2.getValue().getAsString();
+
+                            int distance = levenshteinDistance.apply(value1, value2);
+                            System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> " + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                        }
                     }
-                });
-            });*/
+                }
+            }
         }
 
         //System.out.println("ALL MATCHES: " + matches.size());

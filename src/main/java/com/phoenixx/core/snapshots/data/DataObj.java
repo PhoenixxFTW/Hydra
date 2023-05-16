@@ -36,7 +36,12 @@ public class DataObj {
     public void convertToMap() {
         Type mapType = new TypeToken<Map<String, Map>>(){}.getType();
         Gson gson = new Gson();
-        keyPairData = gson.fromJson(this.fullBody, new TypeToken<HashMap<String, Object>>() {}.getType());
-        jsonObject = gson.fromJson(this.fullBody, JsonObject.class);
+        //keyPairData = gson.fromJson(this.fullBody, new TypeToken<HashMap<String, Object>>() {}.getType());
+        try {
+            jsonObject = gson.fromJson(this.fullBody, JsonObject.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("FAILED WITH BODY: " + this.fullBody);
+        }
     }
 }

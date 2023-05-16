@@ -24,7 +24,7 @@ public class HTTPObject {
 
     private String body;
 
-    private String contentType;
+    public String contentType;
 
     private final Map<String, QueryObj> headers;
     private final Map<String, QueryObj> cookies;
@@ -95,7 +95,7 @@ public class HTTPObject {
                         String decodedString = new String(decodedBytes, StandardCharsets.UTF_8);
                         //System.out.println("HTTPBody ActualData: " + decodedString);
 
-                        httpObject.body = Parser.decodeBase64Val(actualData);
+                        httpObject.setBody(Parser.decodeBase64Val(actualData));
                     }
                 }
             }
