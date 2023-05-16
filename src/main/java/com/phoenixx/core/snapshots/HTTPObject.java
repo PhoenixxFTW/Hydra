@@ -24,6 +24,8 @@ public class HTTPObject {
 
     private String body;
 
+    private String contentType;
+
     private final Map<String, QueryObj> headers;
     private final Map<String, QueryObj> cookies;
 
@@ -97,6 +99,17 @@ public class HTTPObject {
                     }
                 }
             }
+            QueryObj queryObj = httpObject.getHeaders().get("Content-Type");
+            if(queryObj != null) {
+                httpObject.contentType = queryObj.getVal();
+                System.out.println("CONTENT-TYPE: " + httpObject.contentType);
+
+                if(httpObject.contentType.equalsIgnoreCase("application/json")) {
+                    System.out.println("BODY: " + httpObject.body);
+                }
+            }
+
+            //System.out.println("BODY: " + httpObject.body);
         }
         return httpObject;
     }
