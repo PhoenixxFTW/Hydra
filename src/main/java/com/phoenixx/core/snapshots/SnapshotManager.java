@@ -1,6 +1,7 @@
 package com.phoenixx.core.snapshots;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.phoenixx.core.loader.FileLoader;
@@ -111,44 +112,80 @@ public class SnapshotManager {
             return;
         }
 
-        Map<Snapshot, JsonObject> jsonObjects = new HashMap<>();
+        List<JsonObject> firstObjects = new ArrayList<>();
+        Map<Snapshot, List<JsonObject>> jsonObjects = new HashMap<>();
 
         Gson gson = new Gson();
         String jsonData = currentSnapshot.getRequest().getBody();
         System.out.println("CONVERTING MAIN @@@@@@@@@@ JSON DATA TO OBJ: " + jsonData);
-        JsonObject firstObj = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonObject.class);
+        //JsonObject firstObj = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonObject.class);
+
+        JsonElement jsonElement = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonElement.class);
+
+        if (jsonElement.isJsonObject()) {
+            firstObjects.add(jsonElement.getAsJsonObject());
+        } else if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            jsonArray.forEach(element -> firstObjects.add(element.getAsJsonObject()));
+        } else {
+            System.out.println("The JSON is neither an object nor an array");
+            return;
+        }
 
         // Loop through all snapshots before the current one
         for(int i = snapshotID - 1; i >= 0; i--) {
             Snapshot otherSnapshot = this.getSnapshot(i);
 
-            if (otherSnapshot == null || (otherSnapshot.getRequest() == null || otherSnapshot.getRequest().contentType == null || otherSnapshot.getRequest().getBody() == null || !otherSnapshot.getRequest().contentType.equalsIgnoreCase("application/json"))) {
+            if (otherSnapshot == null || (otherSnapshot.getResponse() == null || otherSnapshot.getResponse().contentType == null || otherSnapshot.getResponse().getBody() == null || !otherSnapshot.getResponse().contentType.equalsIgnoreCase("application/json"))) {
                 //System.out.println("Snapshot #"+i + " request was null @@");
                 continue;
             }
 
-            jsonData = otherSnapshot.getRequest().getBody();
+            jsonData = otherSnapshot.getResponse().getBody();
             System.out.println("#" + i + ") CONVERT JSON DATA TO OBJ: " + jsonData);
-            JsonObject jsonObject = gson.fromJson(otherSnapshot.getRequest().getBody(), JsonObject.class);
-            System.out.println("JSON OBJ " + jsonObject);
-            jsonObjects.put(otherSnapshot, jsonObject);
+            //JsonObject jsonObject = gson.fromJson(otherSnapshot.getResponse().getBody(), JsonObject.class);
+
+            jsonElement = gson.fromJson(jsonData, JsonElement.class);
+
+            System.out.println("JSON OBJ " + jsonElement);
+            if (jsonElement.isJsonObject()) {
+                jsonObjects.put(otherSnapshot, new ArrayList<>(Collections.singleton(jsonElement.getAsJsonObject())));
+            } else if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+                jsonArray.forEach(element -> {
+                    List<JsonObject> listObjects = new ArrayList<>();
+                    if(jsonObjects.containsKey(otherSnapshot)) {
+                        listObjects = jsonObjects.get(otherSnapshot);
+                    }
+                    listObjects.add(element.getAsJsonObject());
+                    jsonObjects.put(otherSnapshot, listObjects);
+                });
+            } else {
+                System.out.println("The JSON is neither an object nor an array");
+            }
             //System.out.println("FULL SNAPSHOT: " + otherSnapshot.toString());
         }
 
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
-        for(Snapshot searchingSnapshot: jsonObjects.keySet()) {
-            JsonObject secondObj = jsonObjects.get(searchingSnapshot);
+        for (JsonObject firstObj : firstObjects) {
+            for (Snapshot searchingSnapshot : jsonObjects.keySet()) {
 
-            for (Map.Entry<String, JsonElement> entry1 : firstObj.entrySet()) {
-                for (Map.Entry<String, JsonElement> entry2 : secondObj.entrySet()) {
-                    if (entry1.getKey().equals(entry2.getKey())) {
-                        if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive()) {
-                            String value1 = entry1.getValue().getAsString();
-                            String value2 = entry2.getValue().getAsString();
+                for (JsonObject secondObj : jsonObjects.get(searchingSnapshot)) {
 
-                            int distance = levenshteinDistance.apply(value1, value2);
-                            System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> " + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                    for (Map.Entry<String, JsonElement> entry1 : firstObj.entrySet()) {
+
+                        for (Map.Entry<String, JsonElement> entry2 : secondObj.entrySet()) {
+
+                            if (entry1.getKey().equals(entry2.getKey())) {
+                                if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive()) {
+                                    String value1 = entry1.getValue().getAsString();
+                                    String value2 = entry2.getValue().getAsString();
+
+                                    int distance = levenshteinDistance.apply(value1, value2);
+                                    System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> #" + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                                }
+                            }
                         }
                     }
                 }
