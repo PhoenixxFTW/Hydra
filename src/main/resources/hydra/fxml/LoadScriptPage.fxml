@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox style="-fx-background-color: #22272e;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.LoadScriptController">
    <children>
       <HBox alignment="CENTER" prefHeight="742.0" prefWidth="1255.0" VBox.vgrow="ALWAYS">
