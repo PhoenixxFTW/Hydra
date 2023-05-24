@@ -20,14 +20,18 @@
          <content>
             <HBox>
                <children>
-                  <JFXTreeTableView fx:id="jfxTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+                  <JFXTreeTableView fx:id="headersTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </content>
       </Tab>
       <Tab text="Cookies">
          <content>
-            <AnchorPane fx:id="cookiesPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <HBox>
+               <children>
+                  <JFXTreeTableView fx:id="cookiesTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
          </content>
       </Tab>
       <Tab text="Body">
