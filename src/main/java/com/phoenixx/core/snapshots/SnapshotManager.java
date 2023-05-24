@@ -109,8 +109,8 @@ public class SnapshotManager {
      *
      * searchType: 0 = body, 1 = headers, 2 = cookies
      */
-    public Map<Snapshot, List<String>> getPreReqs(int snapshotID) {
-        Map<Snapshot, List<String>> data = new HashMap<>();
+    public Map<Snapshot, Map<String, String>> getPreReqs(int snapshotID) {
+        Map<Snapshot, Map<String, String>> data = new HashMap<>();
         Snapshot currentSnapshot = this.getSnapshot(snapshotID);
         if(currentSnapshot == null || (currentSnapshot.getRequest() == null)) {
             return data;
@@ -150,12 +150,12 @@ public class SnapshotManager {
             }
 
             jsonData = otherSnapshot.getResponse().getBody();
-            System.out.println("#" + i + ") CONVERT JSON DATA TO OBJ: " + jsonData);
+            //System.out.println("#" + i + ") CONVERT JSON DATA TO OBJ: " + jsonData);
             //JsonObject jsonObject = gson.fromJson(otherSnapshot.getResponse().getBody(), JsonObject.class);
 
             jsonElement = gson.fromJson(jsonData, JsonElement.class);
 
-            System.out.println("JSON OBJ " + jsonElement);
+            //System.out.println("JSON OBJ " + jsonElement);
             if (jsonElement.isJsonObject()) {
                 jsonObjects.put(otherSnapshot, new ArrayList<>(Collections.singleton(jsonElement.getAsJsonObject())));
             } else if (jsonElement.isJsonArray()) {
@@ -194,10 +194,10 @@ public class SnapshotManager {
                                     int distance = levenshteinDistance.apply(value1, value2);
                                     if(distance <= threshold) {
                                         if(!data.containsKey(searchingSnapshot)) {
-                                            data.put(searchingSnapshot, new ArrayList<>());
+                                            data.put(searchingSnapshot, new HashMap<>());
                                         }
-                                        List<String> matched = data.get(searchingSnapshot);
-                                        matched.add(value1);
+                                        Map<String, String> matched = data.get(searchingSnapshot);
+                                        matched.put(entry1.getKey(), value1);
                                         data.put(searchingSnapshot, matched);
                                         System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> #" + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
                                     }

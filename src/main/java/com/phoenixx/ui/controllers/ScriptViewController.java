@@ -124,7 +124,6 @@ public class ScriptViewController {
                                 if(transaction.getTransactionName().equalsIgnoreCase(transactionName)) {
                                     for(Step step: transaction.getSteps()) {
                                         if(step.getStepName().equalsIgnoreCase(stepItem.getValue())) {
-                                            System.out.println("FOUND STEP @@@@@@@@@@: " + step);
                                             try {
                                                 requestUpdate(step);
                                             } catch (IOException e) {

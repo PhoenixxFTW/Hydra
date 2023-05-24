@@ -15,7 +15,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,11 +23,12 @@ import java.util.Map;
  * @since 7:19 PM [20-05-2023]
  */
 public class RequestDataController {
+
+    public Tab tabNameLabel;
     public JFXTabPane requestTabPane;
     public JFXTreeTableView headersTable;
-    public JFXTextArea bodyArea;
-    public Tab tabNameLabel;
     public JFXTreeTableView cookiesTable;
+    public JFXTextArea bodyArea;
     public JFXTextArea analysisTextArea;
 
     @FXML
@@ -37,25 +37,26 @@ public class RequestDataController {
     }
 
     public void setup(String label, HTTPObject httpObject, Snapshot snapshot, VugenScript vugenScript) {
-        tabNameLabel.setText(label);
-        bodyArea.setText(httpObject.getBody());
+        this.tabNameLabel.setText(label);
+        this.bodyArea.setText(httpObject.getBody());
 
         this.setupTable(this.headersTable, httpObject.getHeaders());
         this.setupTable(this.cookiesTable, httpObject.getCookies());
 
-        Map<Snapshot, List<String>> matchingData = vugenScript.getSnapshotManager().getPreReqs(snapshot.getID());
+        Map<Snapshot, Map<String, String>> matchingData = vugenScript.getSnapshotManager().getPreReqs(snapshot.getID());
 
         StringBuilder stringBuilder = new StringBuilder();
         for(Snapshot snapshotMatch: matchingData.keySet()) {
             stringBuilder.append("Snapshot #").append(snapshotMatch.getID()).append("\n");
 
-            for(String line: matchingData.get(snapshotMatch)) {
-                stringBuilder.append("\t Matched Value: ").append(line).append("\n");
+            Map<String, String> items = matchingData.get(snapshotMatch);
+            for(String key: items.keySet()) {
+                stringBuilder.append("\t Matched '").append(key).append("' value: ").append(items.get(key)).append("\n");
             }
         }
 
-        analysisTextArea.setEditable(false);
-        analysisTextArea.setText(stringBuilder.toString());
+        this.analysisTextArea.setEditable(false);
+        this.analysisTextArea.setText(stringBuilder.toString());
     }
 
     private void setupTable(JFXTreeTableView tableView, Map<String, QueryObj> data) {
