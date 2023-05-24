@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.phoenixx.core.script.impl.VugenScript;
 import com.phoenixx.core.snapshots.HTTPObject;
 import com.phoenixx.core.snapshots.QueryObj;
 import com.phoenixx.core.snapshots.impl.Snapshot;
@@ -14,6 +15,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,17 +29,33 @@ public class RequestDataController {
     public JFXTextArea bodyArea;
     public Tab tabNameLabel;
     public JFXTreeTableView cookiesTable;
+    public JFXTextArea analysisTextArea;
+
     @FXML
     public void initialize() {
 
     }
 
-    public void setup(String label, HTTPObject httpObject, Snapshot snapshot) {
+    public void setup(String label, HTTPObject httpObject, Snapshot snapshot, VugenScript vugenScript) {
         tabNameLabel.setText(label);
         bodyArea.setText(httpObject.getBody());
 
         this.setupTable(this.headersTable, httpObject.getHeaders());
         this.setupTable(this.cookiesTable, httpObject.getCookies());
+
+        Map<Snapshot, List<String>> matchingData = vugenScript.getSnapshotManager().getPreReqs(snapshot.getID());
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(Snapshot snapshotMatch: matchingData.keySet()) {
+            stringBuilder.append("Snapshot #").append(snapshotMatch.getID()).append("\n");
+
+            for(String line: matchingData.get(snapshotMatch)) {
+                stringBuilder.append("\t Matched Value: ").append(line).append("\n");
+            }
+        }
+
+        analysisTextArea.setEditable(false);
+        analysisTextArea.setText(stringBuilder.toString());
     }
 
     private void setupTable(JFXTreeTableView tableView, Map<String, QueryObj> data) {

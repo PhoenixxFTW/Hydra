@@ -105,11 +105,19 @@ public class SnapshotManager {
      * 2) Check if snapshot has any header, or cookie values that match with the data in current snapshot.
      * 3) Since we will have a parser for JSON, and other data types. We can use that to our advantage when searching the body for the request
      *      -> The body will be seperated into key value pairs in order to find the values that match between the 2 snapshots
+     * // FIXME Make this support searching headers, cookies and the request body separately
+     *
+     * searchType: 0 = body, 1 = headers, 2 = cookies
      */
-    public void getPreReqs(int snapshotID) {
+    public Map<Snapshot, List<String>> getPreReqs(int snapshotID) {
+        Map<Snapshot, List<String>> data = new HashMap<>();
         Snapshot currentSnapshot = this.getSnapshot(snapshotID);
-        if(currentSnapshot == null || (currentSnapshot.getRequest() == null || currentSnapshot.getRequest().contentType == null || currentSnapshot.getRequest().getBody() == null || !currentSnapshot.getRequest().contentType.equalsIgnoreCase("application/json"))) {
-            return;
+        if(currentSnapshot == null || (currentSnapshot.getRequest() == null)) {
+            return data;
+        }
+
+        if(currentSnapshot.getRequest().contentType == null || currentSnapshot.getRequest().getBody() == null || !currentSnapshot.getRequest().contentType.equalsIgnoreCase("application/json")) {
+            return data;
         }
 
         List<JsonObject> firstObjects = new ArrayList<>();
@@ -129,7 +137,7 @@ public class SnapshotManager {
             jsonArray.forEach(element -> firstObjects.add(element.getAsJsonObject()));
         } else {
             System.out.println("The JSON is neither an object nor an array");
-            return;
+            return data;
         }
 
         // Loop through all snapshots before the current one
@@ -166,6 +174,7 @@ public class SnapshotManager {
             //System.out.println("FULL SNAPSHOT: " + otherSnapshot.toString());
         }
 
+        int threshold = 3;
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 
         // Loop through the snapshot that will be used to compare to the others
@@ -183,7 +192,15 @@ public class SnapshotManager {
                                     String value2 = entry2.getValue().getAsString();
 
                                     int distance = levenshteinDistance.apply(value1, value2);
-                                    System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> #" + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                                    if(distance <= threshold) {
+                                        if(!data.containsKey(searchingSnapshot)) {
+                                            data.put(searchingSnapshot, new ArrayList<>());
+                                        }
+                                        List<String> matched = data.get(searchingSnapshot);
+                                        matched.add(value1);
+                                        data.put(searchingSnapshot, matched);
+                                        System.out.println("\nSNAPSHOTS #" + currentSnapshot.getID() + " -> #" + searchingSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                                    }
                                 }
                             }
                         }
@@ -194,6 +211,8 @@ public class SnapshotManager {
 
         //System.out.println("ALL MATCHES: " + matches.size());
         //matches.forEach(s -> System.out.println(" -> " + s));
+
+        return data;
     }
 
     /**

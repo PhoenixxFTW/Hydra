@@ -74,7 +74,7 @@ public class RequestEditorController {
 
         this.addressBarController.setup(snapshot);
 
-        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot);
-        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot);
+        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot, vugenScript);
+        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot, vugenScript);
     }
 }
