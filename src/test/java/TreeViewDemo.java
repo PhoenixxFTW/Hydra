@@ -11,12 +11,14 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -77,6 +79,35 @@ public class TreeViewDemo extends Application {
         final Scene scene = new Scene(box, 400, 300);
         scene.setFill(Color.LIGHTGRAY);
 
+        treeView.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>() {
+            @Override
+            public TreeCell<String> call(TreeView<String> param) {
+                return new TreeCell<String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setText(item);
+
+                            if (getTreeItem().isLeaf()) {
+                                HBox hBox = new HBox();
+                                Line line = new Line(0, 10, 10, 10); // Adjust as necessary
+                                line.setStroke(Color.GRAY);
+                                hBox.getChildren().add(line);
+                                hBox.getChildren().add(new Label(item));
+                                setGraphic(hBox);
+                            } else {
+                                setGraphic(new Label(item));
+                            }
+                        }
+                    }
+                };
+            }
+        });
 
 
         treeView.setShowRoot(false);
@@ -92,7 +123,6 @@ public class TreeViewDemo extends Application {
 
         box.getChildren().addAll(new JFXTreeViewPath(treeView), treeView, filterField);
         VBox.setVgrow(treeView, Priority.ALWAYS);
-
         stage.setScene(scene);
         stage.show();
 
@@ -136,6 +166,7 @@ public class TreeViewDemo extends Application {
                     return this.predicate.get().test(this, child.getValue());
                 };
             }, this.predicate));
+
             setHiddenFieldChildren(this.filteredList);
         }
 

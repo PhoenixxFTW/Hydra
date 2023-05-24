@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXTabPane fx:id="requestTabPane" stylesheets="@../css/fullpackstyling.css" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.RequestDataController">
+<JFXTabPane fx:id="requestTabPane" style="-fx-background-color: #2a3139;" stylesheets="@../css/fullpackstyling.css" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.RequestDataController">
    <tabs>
       <Tab fx:id="tabNameLabel" disable="true" styleClass="TabNameLabel" text="Request">
         <content>
@@ -20,7 +20,7 @@
          <content>
             <HBox>
                <children>
-                  <JFXTreeTableView fx:id="headersTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+                  <JFXTreeTableView fx:id="headersTable" prefHeight="625.0" prefWidth="999.0" style="-fx-background-color: #2a3139;" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </content>
@@ -29,7 +29,7 @@
          <content>
             <HBox>
                <children>
-                  <JFXTreeTableView fx:id="cookiesTable" prefHeight="625.0" prefWidth="999.0" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+                  <JFXTreeTableView fx:id="cookiesTable" prefHeight="625.0" prefWidth="999.0" style="-fx-background-color: #2a3139;" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </content>

@@ -63,10 +63,12 @@ public class RequestDataController {
         JFXTreeTableColumn<QueryObj, Boolean> enabledColumn = new JFXTreeTableColumn<>("Enabled");
         enabledColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue().getValue().isEnabled()).asObject());
         enabledColumn.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(enabledColumn));
+        enabledColumn.getStyleClass().add("enabledColumn");
         enabledColumn.setEditable(true);
 
         JFXTreeTableColumn<QueryObj, String> keyColumn = new JFXTreeTableColumn<>("Key");
         keyColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getKey()));
+        keyColumn.getStyleClass().add("keyColumn");
 
         JFXTreeTableColumn<QueryObj, String> valColumn = new JFXTreeTableColumn<>("Value");
         valColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getVal()));

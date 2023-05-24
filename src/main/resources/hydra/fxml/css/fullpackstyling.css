@@ -225,7 +225,6 @@
  * TreeView and TreeCell                                                       *
  *                                                                             *
  ******************************************************************************/
-
 .tree-view, .tree-cell {
     -fx-background-color: #1f2329;
     -fx-text-fill: white ;
@@ -317,15 +316,29 @@
 }
 
 .tree-table-row-cell {
-    -fx-border-color: lightgray;
+    -fx-border-color: #2a3139;
     -fx-border-width: 0 0 1 0;
     -fx-pref-height: 30;
+    -fx-background-color: #353d46;
 }
 
 .tree-table-cell {
-    -fx-border-color: lightgray;
+    -fx-border-color: #2a3139;
     -fx-border-width: 0 1 0 0;
     -fx-pref-height: 30;
+    -fx-text-fill: lightgray;
+}
+
+.tree-table-view .column-header {
+    -fx-border-color: #1b2226;
+}
+
+.tree-table-view .keyColumn {
+    -fx-text-fill: #e7e776;
+}
+
+.tree-table-view .enabledColumn {
+    -fx-alignment: CENTER;
 }
 
 .BodyTextArea {
