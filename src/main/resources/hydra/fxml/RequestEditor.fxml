@@ -2,11 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.RequestEditorController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.RequestEditorController">
    <children>
       <VBox fx:id="mainVBox" prefHeight="758.0" prefWidth="999.0" style="-fx-background-color: #2a3139;">
          <children>
@@ -18,6 +19,12 @@
                   <Insets />
                </VBox.margin>
             </Label>
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" style="-fx-background-color: #2a3139;" stylesheets="@css/fullpackstyling.css" VBox.vgrow="ALWAYS">
+              <items>
+                  <StackPane fx:id="requestPane" />
+                  <StackPane fx:id="responsePane" />
+              </items>
+            </SplitPane>
          </children>
       </VBox>
    </children>

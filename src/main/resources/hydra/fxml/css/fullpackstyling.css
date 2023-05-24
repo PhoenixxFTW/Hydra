@@ -331,3 +331,14 @@
 .BodyTextArea {
     -fx-text-fill: lightgray;
 }
+
+/* These css properties are for the RequestDataViewer */
+.TabNameLabel {
+    -fx-background-color: rgb(45, 51, 59);
+    -fx-underline: false;
+    -fx-text-fill: #737373;
+}
+
+.jfx-tab-pane .tab-header-area .TabNameLabel .jfx-rippler{
+    -jfx-rippler-fill: null;
+}

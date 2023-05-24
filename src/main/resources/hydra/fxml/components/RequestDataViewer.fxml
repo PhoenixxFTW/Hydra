@@ -9,8 +9,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXTabPane fx:id="requestTabPane" stylesheets="@../css/fullpackstyling.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.RequestDataController">
+<JFXTabPane fx:id="requestTabPane" stylesheets="@../css/fullpackstyling.css" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.RequestDataController">
    <tabs>
+      <Tab fx:id="tabNameLabel" disable="true" styleClass="TabNameLabel" text="Request">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
       <Tab text="Headers">
          <content>
             <HBox>
