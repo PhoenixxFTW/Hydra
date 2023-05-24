@@ -69,7 +69,7 @@ public class RequestEditorController {
         VugenScript vugenScript = HydraApp.getInstance().getScriptManager().getLoadedScript();
         Snapshot snapshot = vugenScript.getSnapshotManager().getSnapshot(step.getSnapshotId());
 
-        System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
+        //System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
         this.requestNameLabel.setText(step.getStepName() +"(ID: " + snapshot.getID() + ")");
 
         this.addressBarController.setup(snapshot);

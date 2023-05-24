@@ -300,6 +300,7 @@
     -fx-background-color: #4b5866;
 }
 
+/* Used for the column header tab area in JFXTabPane*/
 .jfx-tab-pane .tab-header-area .tab-header-background {
     /*-fx-opacity: 0.0;*/
     -fx-background-color: #22272e;

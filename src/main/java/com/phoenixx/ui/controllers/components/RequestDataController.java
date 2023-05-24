@@ -1,19 +1,18 @@
 package com.phoenixx.ui.controllers.components;
 
-import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.*;
 import com.phoenixx.core.script.impl.VugenScript;
 import com.phoenixx.core.snapshots.HTTPObject;
 import com.phoenixx.core.snapshots.QueryObj;
 import com.phoenixx.core.snapshots.impl.Snapshot;
+import com.phoenixx.ui.components.slider.CustomSliderOption;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
+import javafx.scene.layout.HBox;
 
 import java.util.Map;
 
@@ -30,6 +29,9 @@ public class RequestDataController {
     public JFXTreeTableView cookiesTable;
     public JFXTextArea bodyArea;
     public JFXTextArea analysisTextArea;
+
+    public HBox searchHBox;
+    public JFXButton searchButton;
 
     @FXML
     public void initialize() {
@@ -54,6 +56,11 @@ public class RequestDataController {
                 stringBuilder.append("\t Matched '").append(key).append("' value: ").append(items.get(key)).append("\n");
             }
         }
+
+        CustomSliderOption sliderOption = new CustomSliderOption();
+        sliderOption.setStyle("-fx-background-color: #1f2329");
+        sliderOption.setSliderOption(new CustomSliderOption.SliderOption("Similarity Threshold", 0, 0, 10, 1, 2, 1, 662, true));
+        this.searchHBox.getChildren().setAll(searchButton, sliderOption);
 
         this.analysisTextArea.setEditable(false);
         this.analysisTextArea.setText(stringBuilder.toString());

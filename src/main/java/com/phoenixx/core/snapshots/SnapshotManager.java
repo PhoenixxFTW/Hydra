@@ -28,8 +28,12 @@ public class SnapshotManager {
 
     private final static String SNAPSHOT_REGEX = "snapshot_\\d+\\.xml";
 
+    public final static int THRESHOLD = 3;
+
     public SnapshotManager(IScript script) {
         this.snapshotMap = new TreeMap<>();
+
+        // int percentage = 100 - ((input - min) * 100) / (max - min)
 
         // Load the snapshots from the data folder
         this.loadSnapshots(new File(script.getScriptFile().getScriptFolder(), "data"));

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<fx:root type="javafx.scene.layout.Pane" xmlns:fx="http://javafx.com/fxml" style="-fx-background-color: #22272e;">
+</fx:root>
