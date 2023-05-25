@@ -160,6 +160,6 @@ public class HTTPObject {
         return builder.toString();
     }
     public enum Type {
-        GET, PATCH, POST, PUT, DELETE
+        GET, PATCH, POST, PUT, DELETE, OPTIONS
     }
 }

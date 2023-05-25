@@ -61,6 +61,9 @@ public class ProtocolManager {
 
     public IProtocol getProtocolFromType(ProtocolTypes type) {
         //FIXME Could also try using class#newInstance();
+        if(this.getLoadedProtocols().get(type) == null) {
+            return null;
+        }
         return this.createInstanceOfProtocol(this.getLoadedProtocols().getOrDefault(type, null));
     }
 

@@ -112,7 +112,7 @@ public class ScriptViewController {
                     }
                     Collections.reverse(parentFolders);
 
-                    if(parentFolders.size() < 2) {
+                    if(parentFolders.size() < 3) {
                         return;
                     }
                     String actionFileName = parentFolders.get(1);

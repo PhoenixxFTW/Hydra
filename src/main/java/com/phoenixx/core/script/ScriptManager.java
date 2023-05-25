@@ -75,7 +75,13 @@ public class ScriptManager {
         protocolNames = document.getElementsByTagName("Protocol").item(0).getTextContent().split(", ");
 
         for (String protocolName: protocolNames) {
-            protocols.add(this.protocolManager.getProtocolFromType(ProtocolTypes.getFromName(protocolName)));
+            IProtocol protocol = this.protocolManager.getProtocolFromType(ProtocolTypes.getFromName(protocolName));
+            if(protocol != null) {
+                protocols.add(protocol);
+            } else {
+                //TODO Add proper error handling / logging system
+                System.out.println("Could not add protocol: " + protocolName + " to script: " + scriptName + " as it does not exist!");
+            }
         }
 
         System.out.println("SCRIPT NAME: " + scriptName);

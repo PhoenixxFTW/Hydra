@@ -61,9 +61,6 @@ public class CustomSliderOption extends VBox {
     public void setSliderOption(final SliderOption sliderOption) {
         this.sliderOption = sliderOption;
 
-        System.out.println("SETTING SLIDER TICK TO MAJOR: " + sliderOption.majorTickCount);
-        System.out.println("SETTING SLIDER TICK TO MINOR: " + sliderOption.minorTickCount);
-
         this.jfxSlider.setMin(sliderOption.min);
         this.jfxSlider.setMax(sliderOption.max);
         this.jfxSlider.setValue(((Number) sliderOption.value).doubleValue());

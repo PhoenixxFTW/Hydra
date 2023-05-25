@@ -69,6 +69,12 @@ public class RequestEditorController {
         VugenScript vugenScript = HydraApp.getInstance().getScriptManager().getLoadedScript();
         Snapshot snapshot = vugenScript.getSnapshotManager().getSnapshot(step.getSnapshotId());
 
+        if(snapshot == null) {
+            System.out.println("ERROR RequestEditorController.updateRequestEditor: Cannot setup request editor with null snapshot with ID: " + step.getSnapshotId());
+            return;
+        }
+        // TODO Add a notification in the RequestDataController for null snapshots (Normally happens if someone has commented it out)
+
         //System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
         this.requestNameLabel.setText(step.getStepName() +"(ID: " + snapshot.getID() + ")");
 
