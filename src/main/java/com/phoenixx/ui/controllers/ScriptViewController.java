@@ -61,7 +61,7 @@ public class ScriptViewController {
                 FilterableTreeItem<String> transactionNode = new FilterableTreeItem<>(transaction.getTransactionName());
 
                 for(Step step: transaction.getSteps()) {
-                    FilterableTreeItem<String> stepNode = new FilterableTreeItem<>(step.getStepName());
+                    FilterableTreeItem<String> stepNode = new FilterableTreeItem<>(step.getStepName() + " (ID: " + step.getSnapshotId() + ")");
                     transactionNode.getInternalChildren().add(stepNode);
                 }
                 actionNode.getInternalChildren().add(transactionNode);
@@ -123,7 +123,8 @@ public class ScriptViewController {
                             for(Transaction transaction: action.getTransactions()) {
                                 if(transaction.getTransactionName().equalsIgnoreCase(transactionName)) {
                                     for(Step step: transaction.getSteps()) {
-                                        if(step.getStepName().equalsIgnoreCase(stepItem.getValue())) {
+                                        String stepName = stepItem.getValue().substring(0, stepItem.getValue().indexOf("(")).trim();
+                                        if(step.getStepName().equalsIgnoreCase(stepName)) {
                                             try {
                                                 requestUpdate(step);
                                             } catch (IOException e) {

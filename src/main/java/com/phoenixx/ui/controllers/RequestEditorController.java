@@ -76,7 +76,7 @@ public class RequestEditorController {
         // TODO Add a notification in the RequestDataController for null snapshots (Normally happens if someone has commented it out)
 
         //System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
-        this.requestNameLabel.setText(step.getStepName() +"(ID: " + snapshot.getID() + ")");
+        this.requestNameLabel.setText(step.getStepName() +" (ID: " + snapshot.getID() + ")");
 
         this.addressBarController.setup(snapshot);
 
