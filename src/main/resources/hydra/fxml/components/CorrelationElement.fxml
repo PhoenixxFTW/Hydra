@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -46,7 +47,11 @@
             <Label fx:id="snapshotLocLabel" prefHeight="17.0" prefWidth="461.0" style="-fx-text-fill: white;" text="vuserinit.c/FroLogin/authn" />
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <JFXTreeTableView fx:id="correlationTable" style="-fx-background-color: #2a3139;" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS" />
+                  <JFXTreeTableView fx:id="correlationTable" style="-fx-background-color: #2a3139;" stylesheets="@../css/fullpackstyling.css" HBox.hgrow="ALWAYS">
+                     <columnResizePolicy>
+                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </JFXTreeTableView>
                </children>
             </HBox>
          </children>

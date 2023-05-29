@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -48,6 +50,8 @@ public class CorrelationElementController {
         this.snapshotLocLabel.setText(action.getActionName() + "/" + transaction.getTransactionName() + "/" + step.getStepName());
         this.snapshotLocLabel.setStyle("-fx-text-fill: lightgray");
 
+        HBox.setHgrow(this.correlationTable, Priority.ALWAYS);
+
         JFXTreeTableColumn<QueryObj, String> correlationParamColumn = new JFXTreeTableColumn<>("Correlation Parameter");
         correlationParamColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getKey()));
 
@@ -66,7 +70,6 @@ public class CorrelationElementController {
         // Hides the dummy root
         this.correlationTable.setShowRoot(false);
 
-        autoResizeColumns(correlationTable);
     }
 
     public static void autoResizeColumns(JFXTreeTableView<?> table ) {
