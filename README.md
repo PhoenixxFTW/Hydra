@@ -22,6 +22,7 @@ You can find some screenshots of the tool below, please keep in mind everything 
 ![image](https://user-images.githubusercontent.com/24358694/234886378-a83d7613-39b1-4fe3-89bc-95fd2acca240.png)
 ![image](https://github.com/PhoenixxFTW/Hydra/assets/24358694/d6913346-e738-4ca8-9176-303748f16b12)
 ![Automatic Correlation Analysis](https://github.com/PhoenixxFTW/Hydra/assets/24358694/1f504e41-9418-48df-876c-a647af2580e3)
+![Automatic Correlation Analysis](https://github.com/PhoenixxFTW/Hydra/assets/24358694/844431f9-5668-4c73-a1ce-0a54b9ba70dd)
 
 
 ## Future plans
