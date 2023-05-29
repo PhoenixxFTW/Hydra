@@ -5,9 +5,11 @@
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -56,9 +58,9 @@
         <content>
             <VBox style="-fx-background-color: #2a3139;">
                <children>
-                  <HBox fx:id="searchHBox" prefHeight="36.0" prefWidth="999.0" style="-fx-background-color: #1f2329;">
+                  <HBox fx:id="searchHBox" prefHeight="41.0" prefWidth="999.0" style="-fx-background-color: #1f2329;">
                      <children>
-                        <JFXButton fx:id="searchButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="80.0" text="Search" textFill="#2bc600" HBox.hgrow="ALWAYS">
+                        <JFXButton fx:id="searchButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="80.0" text="Scan" textFill="#2bc600" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -71,18 +73,15 @@
                         <Insets bottom="5.0" />
                      </padding>
                   </HBox>
-                 <HBox VBox.vgrow="ALWAYS">
-                    <children>
-                       <JFXTextArea fx:id="analysisTextArea" styleClass="BodyTextArea" stylesheets="@../css/fullpackstyling.css" text="test" HBox.hgrow="ALWAYS">
-                          <HBox.margin>
-                             <Insets top="-5.0" />
-                          </HBox.margin>
-                          <font>
-                             <Font size="13.0" />
-                          </font>
-                       </JFXTextArea>
-                    </children>
-                 </HBox>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="999.0" VBox.vgrow="ALWAYS">
+                    <content>
+                        <StackPane prefHeight="581.0" prefWidth="997.0">
+                           <children>
+                              <VBox fx:id="correlationTimeLine" prefHeight="200.0" prefWidth="100.0" />
+                           </children>
+                        </StackPane>
+                    </content>
+                  </ScrollPane>
                </children>
             </VBox>
         </content>

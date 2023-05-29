@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.JFXTreeViewPath;
 import com.phoenixx.core.script.Action;
+import com.phoenixx.core.script.IScript;
 import com.phoenixx.core.script.Step;
 import com.phoenixx.core.script.Transaction;
 import com.phoenixx.core.script.impl.VugenScript;
@@ -82,9 +83,9 @@ public class ScriptViewController {
             return TreeItemPredicate.create(actor -> actor.contains(filterField.getText()));
         }, filterField.textProperty()));
 
-        projectManagerTree.setRoot(rootNode);
+        this.projectManagerTree.setRoot(rootNode);
 
-        JFXTreeViewPath jfxTreeViewPath = new JFXTreeViewPath(projectManagerTree);
+        JFXTreeViewPath jfxTreeViewPath = new JFXTreeViewPath(this.projectManagerTree);
         jfxTreeViewPath.getStylesheets().add("/hydra/fxml/css/fullpackstyling.css");
 
         jfxTreeViewPath.setFocusTraversable(false);
@@ -92,13 +93,13 @@ public class ScriptViewController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
         Parent editorScene = loader.load();
-        codeTab.getChildren().setAll(editorScene);
-        editorController = loader.getController();
+        this.codeTab.getChildren().setAll(editorScene);
+        this.editorController = loader.getController();
 
         // Add event filter for double-click events
-        projectManagerTree.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        this.projectManagerTree.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getClickCount() == 2) {
-                FilterableTreeItem<String> stepItem = (FilterableTreeItem<String>) projectManagerTree.getSelectionModel().getSelectedItem();
+                FilterableTreeItem<String> stepItem = (FilterableTreeItem<String>) this.projectManagerTree.getSelectionModel().getSelectedItem();
                 if (stepItem != null) {
                     // Do something when item1 is double-clicked
                     System.out.println("Clicked on request: " + stepItem.getValue());
@@ -126,7 +127,7 @@ public class ScriptViewController {
                                         String stepName = stepItem.getValue().substring(0, stepItem.getValue().indexOf("(")).trim();
                                         if(step.getStepName().equalsIgnoreCase(stepName)) {
                                             try {
-                                                requestUpdate(step);
+                                                requestUpdate(vugenScript, action, transaction, step);
                                             } catch (IOException e) {
                                                 throw new RuntimeException(e);
                                             }
@@ -149,7 +150,7 @@ public class ScriptViewController {
         });
 */
         // change color + size for the path
-        projectManagerTree.getSelectionModel().selectedItemProperty().addListener(observable -> {
+        this.projectManagerTree.getSelectionModel().selectedItemProperty().addListener(observable -> {
             for (Node node: ((HBox) jfxTreeViewPath.getContent()).getChildren()) {
                 if (node instanceof StackPane) {
                     for (int i = 0; i < ((StackPane) node).getChildren().size(); i++) {
@@ -164,8 +165,8 @@ public class ScriptViewController {
             }
         });
 
-        treeVBox.getChildren().add(0, jfxTreeViewPath);
-        treeVBox.getChildren().add(1, filterField);
+        this.treeVBox.getChildren().add(0, jfxTreeViewPath);
+        this.treeVBox.getChildren().add(1, filterField);
 
         // fix the padding issue
         Label tvPathLabel = (Label) ((HBox) jfxTreeViewPath.getContent()).getChildren().get(0);
@@ -180,15 +181,16 @@ public class ScriptViewController {
         editorController.setupScript(this.vugenScript.getActions().get(1), codeTab);*/
     }
 
-    private void requestUpdate(Step step) throws IOException {
-        if(editorController == null) {
+    private void requestUpdate(IScript script, Action action, Transaction transaction, Step step) throws IOException {
+        if(this.editorController == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
             Parent editorScene = loader.load();
-            codeTab.getChildren().setAll(editorScene);
-            editorController = loader.getController();
+            this.codeTab.getChildren().setAll(editorScene);
+            this.editorController = loader.getController();
         }
-        if(editorController != null) {
-            editorController.updateRequestEditor(step);
+
+        if(this.editorController != null) {
+            this.editorController.updateRequestEditor(script, action, transaction, step);
         }
     }
 

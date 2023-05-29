@@ -1,8 +1,9 @@
 package com.phoenixx.ui.controllers;
 
-import com.phoenixx.HydraApp;
+import com.phoenixx.core.script.Action;
+import com.phoenixx.core.script.IScript;
 import com.phoenixx.core.script.Step;
-import com.phoenixx.core.script.impl.VugenScript;
+import com.phoenixx.core.script.Transaction;
 import com.phoenixx.core.snapshots.impl.Snapshot;
 import com.phoenixx.ui.controllers.components.RequestAddressBarController;
 import com.phoenixx.ui.controllers.components.RequestDataController;
@@ -63,11 +64,10 @@ public class RequestEditorController {
         this.responseDataController = loader.getController();
     }
 
-    public void updateRequestEditor(Step step) {
+    public void updateRequestEditor(IScript script, Action action, Transaction transaction, Step step) throws IOException {
         System.out.println("CLICKED ON STEP: " + step.getStepName());
 
-        VugenScript vugenScript = HydraApp.getInstance().getScriptManager().getLoadedScript();
-        Snapshot snapshot = vugenScript.getSnapshotManager().getSnapshot(step.getSnapshotId());
+        Snapshot snapshot = script.getSnapshotManager().getSnapshot(step.getSnapshotId());
 
         if(snapshot == null) {
             System.out.println("ERROR RequestEditorController.updateRequestEditor: Cannot setup request editor with null snapshot with ID: " + step.getSnapshotId());
@@ -80,7 +80,7 @@ public class RequestEditorController {
 
         this.addressBarController.setup(snapshot);
 
-        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot, vugenScript);
-        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot, vugenScript);
+        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot, script, action, transaction, step);
+        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot, script, action, transaction, step);
     }
 }

@@ -23,6 +23,15 @@ public class Transaction {
 
     }
 
+    public Step getStepByID(int ID) {
+        for(Step step: this.steps) {
+            if(step.getSnapshotId() == ID) {
+                return step;
+            }
+        }
+        return null;
+    }
+
     public String getTransactionName() {
         return transactionName;
     }
