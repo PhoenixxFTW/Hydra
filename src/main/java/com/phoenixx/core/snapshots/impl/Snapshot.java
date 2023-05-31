@@ -1,6 +1,6 @@
 package com.phoenixx.core.snapshots.impl;
 
-import com.phoenixx.core.snapshots.HTTPObject;
+import com.phoenixx.core.snapshots.data.HTTPObject;
 import com.phoenixx.core.snapshots.ISnapshot;
 
 /**

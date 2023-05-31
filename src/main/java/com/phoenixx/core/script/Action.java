@@ -50,7 +50,7 @@ public class Action {
                 String foundTransaction = Parser.regexCheck(line, Parser.TRANSACTION_START);
                 if(foundTransaction != null) {
                     //System.out.println("FOUND THE START TRANSACTION NAME: " + foundTransaction);
-                    currentTransaction = new Transaction(foundTransaction);
+                    currentTransaction = new Transaction(foundTransaction, this);
                 }
             } else {
                 // Detect the end of a transaction with regex
@@ -87,7 +87,7 @@ public class Action {
                         }
 
                         if (foundRequest != null) {
-                            currentStep = new Step(function, foundRequest);
+                            currentStep = new Step(function, foundRequest, currentTransaction);
                         }
                     } else {
                         // End of the current Step

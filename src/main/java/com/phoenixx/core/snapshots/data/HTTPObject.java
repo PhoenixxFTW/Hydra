@@ -1,4 +1,4 @@
-package com.phoenixx.core.snapshots;
+package com.phoenixx.core.snapshots.data;
 
 import com.phoenixx.util.Parser;
 import org.w3c.dom.Element;

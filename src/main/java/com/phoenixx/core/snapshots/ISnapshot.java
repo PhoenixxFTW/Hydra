@@ -1,5 +1,7 @@
 package com.phoenixx.core.snapshots;
 
+import com.phoenixx.core.snapshots.data.HTTPObject;
+
 /**
  * @author Junaid Talpur
  * @project Hydra

@@ -3,10 +3,7 @@ package com.phoenixx.ui.controllers;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.controls.JFXTreeViewPath;
-import com.phoenixx.core.script.Action;
-import com.phoenixx.core.script.IScript;
-import com.phoenixx.core.script.Step;
-import com.phoenixx.core.script.Transaction;
+import com.phoenixx.core.script.*;
 import com.phoenixx.core.script.impl.VugenScript;
 import com.phoenixx.ui.components.tree.FilterableTreeItem;
 import com.phoenixx.ui.components.tree.TreeItemPredicate;
@@ -127,7 +124,7 @@ public class ScriptViewController {
                                         String stepName = stepItem.getValue().substring(0, stepItem.getValue().indexOf("(")).trim();
                                         if(step.getStepName().equalsIgnoreCase(stepName)) {
                                             try {
-                                                requestUpdate(vugenScript, action, transaction, step);
+                                                requestUpdate(new ScriptContext(vugenScript, action, transaction, step));
                                             } catch (IOException e) {
                                                 throw new RuntimeException(e);
                                             }
@@ -181,7 +178,7 @@ public class ScriptViewController {
         editorController.setupScript(this.vugenScript.getActions().get(1), codeTab);*/
     }
 
-    private void requestUpdate(IScript script, Action action, Transaction transaction, Step step) throws IOException {
+    private void requestUpdate(ScriptContext scriptContext) throws IOException {
         if(this.editorController == null) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/RequestEditor.fxml"));
             Parent editorScene = loader.load();
@@ -190,7 +187,7 @@ public class ScriptViewController {
         }
 
         if(this.editorController != null) {
-            this.editorController.updateRequestEditor(script, action, transaction, step);
+            this.editorController.updateRequestEditor(scriptContext);
         }
     }
 

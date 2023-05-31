@@ -15,25 +15,32 @@ public class Step {
     private final String stepType;
     private final String stepName;
     private final List<String> stepData;
-    public Step(String stepType, String stepName) {
+    private final Transaction transaction;
+
+    private int snapshotID = -1;
+
+    public Step(String stepType, String stepName, Transaction transaction) {
         this.stepType = stepType;
         this.stepName = stepName;
         this.stepData = new ArrayList<>();
+        this.transaction = transaction;
     }
 
     //FIXME This is only for testing purposes
     public int getSnapshotId() {
-        for(String line: this.stepData) {
-            if(line.startsWith("Snapshot=")) {
-                String snapshotVal = line.split("=")[1];
-                // Remove the "t" character in front of the number
-                snapshotVal = snapshotVal.substring(1);
-                // Remove the file extension
-                snapshotVal = snapshotVal.substring(0, snapshotVal.length() - 4);
-                return Integer.parseInt(snapshotVal);
+        if(this.snapshotID == -1) {
+            for (String line : this.stepData) {
+                if (line.startsWith("Snapshot=")) {
+                    String snapshotVal = line.split("=")[1];
+                    // Remove the "t" character in front of the number
+                    snapshotVal = snapshotVal.substring(1);
+                    // Remove the file extension
+                    snapshotVal = snapshotVal.substring(0, snapshotVal.length() - 4);
+                    this.snapshotID = Integer.parseInt(snapshotVal);
+                }
             }
         }
-        return -1;
+        return this.snapshotID;
     }
 
     public String getStepName() {
@@ -42,5 +49,9 @@ public class Step {
 
     public List<String> getStepData() {
         return stepData;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
     }
 }

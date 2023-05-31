@@ -13,9 +13,11 @@ import java.util.List;
 public class Transaction {
     private final String transactionName;
     private final List<Step> steps;
+    private final Action action;
 
-    public Transaction(String transactionName) {
+    public Transaction(String transactionName, Action action) {
         this.transactionName = transactionName;
+        this.action = action;
         this.steps = new ArrayList<>();
     }
 
@@ -38,5 +40,9 @@ public class Transaction {
 
     public List<Step> getSteps() {
         return steps;
+    }
+
+    public Action getAction() {
+        return action;
     }
 }

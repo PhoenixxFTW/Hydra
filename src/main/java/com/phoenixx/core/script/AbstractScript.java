@@ -67,6 +67,23 @@ public abstract class AbstractScript implements IScript {
     }
 
     @Override
+    public Step getStepFromID(int ID) {
+        for(Action action : this.actions) {
+            for(Transaction transaction: action.getTransactions()) {
+                for(Step step: transaction.getSteps()) {
+                    if(step.getSnapshotId() == ID) {
+                        System.out.println("FOUND THE STEP @@@@@: #" + ID + " = " + step.getStepName());
+                        return step;
+                    }
+                }
+                return transaction.getStepByID(ID);
+             }
+        }
+        System.out.println("ERROR: Could not find step with ID: " + ID);
+        return null;
+    }
+
+    @Override
     public SnapshotManager getSnapshotManager() {
         return this.snapshotManager;
     }

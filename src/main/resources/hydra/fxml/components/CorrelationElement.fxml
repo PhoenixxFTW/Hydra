@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 
-<HBox prefHeight="180.0" prefWidth="997.0" style="-fx-background-color: #1c2026;" xmlns="http://javafx.com/javafx/8.0.371" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.CorrelationElementController">
+<HBox prefHeight="180.0" prefWidth="997.0" style="-fx-background-color: #1c2026;" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoenixx.ui.controllers.components.CorrelationElementController">
    <children>
       <VBox prefHeight="180.0" prefWidth="39.0">
          <children>

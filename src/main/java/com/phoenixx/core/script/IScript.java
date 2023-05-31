@@ -13,6 +13,15 @@ import java.util.List;
 public interface IScript {
 
     /**
+     * Retrieves an {@link Step} object instance based on the given ID
+     * This method will loop through all actions, and transactions in order to find the correct step.
+     *
+     * @param ID The ID of the {@link Step} to search for.
+     * @return {@link Step}
+     */
+    Step getStepFromID(int ID);
+
+    /**
      * Name of the script
      * @return {@link String} Script name
      */

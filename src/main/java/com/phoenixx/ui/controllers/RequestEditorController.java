@@ -1,9 +1,6 @@
 package com.phoenixx.ui.controllers;
 
-import com.phoenixx.core.script.Action;
-import com.phoenixx.core.script.IScript;
-import com.phoenixx.core.script.Step;
-import com.phoenixx.core.script.Transaction;
+import com.phoenixx.core.script.*;
 import com.phoenixx.core.snapshots.impl.Snapshot;
 import com.phoenixx.ui.controllers.components.RequestAddressBarController;
 import com.phoenixx.ui.controllers.components.RequestDataController;
@@ -64,23 +61,23 @@ public class RequestEditorController {
         this.responseDataController = loader.getController();
     }
 
-    public void updateRequestEditor(IScript script, Action action, Transaction transaction, Step step) throws IOException {
-        System.out.println("CLICKED ON STEP: " + step.getStepName());
+    public void updateRequestEditor(ScriptContext scriptContext) throws IOException {
+        System.out.println("CLICKED ON STEP: " + scriptContext.getStep().getStepName());
 
-        Snapshot snapshot = script.getSnapshotManager().getSnapshot(step.getSnapshotId());
+        Snapshot snapshot = scriptContext.getScript().getSnapshotManager().getSnapshot(scriptContext.getStep().getSnapshotId());
 
         if(snapshot == null) {
-            System.out.println("ERROR RequestEditorController.updateRequestEditor: Cannot setup request editor with null snapshot with ID: " + step.getSnapshotId());
+            System.out.println("ERROR RequestEditorController.updateRequestEditor: Cannot setup request editor with null snapshot with ID: " + scriptContext.getStep().getSnapshotId());
             return;
         }
         // TODO Add a notification in the RequestDataController for null snapshots (Normally happens if someone has commented it out)
 
         //System.out.println("CLICKED ON SNAPSHOT DATA: \n" + snapshot);
-        this.requestNameLabel.setText(step.getStepName() +" (ID: " + snapshot.getID() + ")");
+        this.requestNameLabel.setText(scriptContext.getStep().getStepName() +" (ID: " + snapshot.getID() + ")");
 
         this.addressBarController.setup(snapshot);
 
-        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot, script, action, transaction, step);
-        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot, script, action, transaction, step);
+        this.requestDataController.setup("Request", snapshot.getRequest(), snapshot, scriptContext);
+        this.responseDataController.setup("Response", snapshot.getResponse(), snapshot, scriptContext);
     }
 }

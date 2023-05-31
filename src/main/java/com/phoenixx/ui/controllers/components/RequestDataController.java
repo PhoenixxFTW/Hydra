@@ -1,12 +1,10 @@
 package com.phoenixx.ui.controllers.components;
 
 import com.jfoenix.controls.*;
-import com.phoenixx.core.script.Action;
-import com.phoenixx.core.script.IScript;
-import com.phoenixx.core.script.Step;
-import com.phoenixx.core.script.Transaction;
-import com.phoenixx.core.snapshots.HTTPObject;
-import com.phoenixx.core.snapshots.QueryObj;
+import com.phoenixx.core.script.ScriptContext;
+import com.phoenixx.core.snapshots.data.CorrelationContext;
+import com.phoenixx.core.snapshots.data.HTTPObject;
+import com.phoenixx.core.snapshots.data.QueryObj;
 import com.phoenixx.core.snapshots.impl.Snapshot;
 import com.phoenixx.ui.components.slider.CustomSliderOption;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -21,10 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Junaid Talpur
@@ -48,38 +43,32 @@ public class RequestDataController {
 
     }
 
-    public void setup(String label, HTTPObject httpObject, Snapshot snapshot, IScript script, Action action, Transaction transaction, Step step) throws IOException {
+    public void setup(String label, HTTPObject httpObject, Snapshot snapshot, ScriptContext scriptContext) throws IOException {
         this.tabNameLabel.setText(label);
         this.bodyArea.setText(httpObject.getBody());
 
         this.setupTable(this.headersTable, httpObject.getHeaders());
         this.setupTable(this.cookiesTable, httpObject.getCookies());
 
-        Map<Snapshot, Map<String, String>> matchingData = script.getSnapshotManager().getPreReqs(snapshot.getID());
+        //Map<Snapshot, Map<String, String>> matchingData = scriptContext.getScript().getSnapshotManager().getPreReqs(snapshot.getID());
+        Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, true);
 
-        Comparator<Snapshot> comparator = (Snapshot snapshot1, Snapshot snapshot2) -> {
-            return (snapshot1.getID() < snapshot2.getID()) ? 1 : 0;
-        };
+        // We sort by the ID. Smaller ID's go first, larger ones come after
+        Comparator<Snapshot> comparator = (Snapshot snapshot1, Snapshot snapshot2) -> (snapshot1.getID() < snapshot2.getID()) ? 1 : 0;
 
         SortedSet<Snapshot> keys = new TreeSet<>(comparator);
-        keys.addAll(matchingData.keySet());
+        keys.addAll(correlationMap.keySet());
 
         this.correlationTimeLine.getChildren().clear();
 
-        StringBuilder stringBuilder = new StringBuilder();
         for(Snapshot snapshotMatch: keys) {
-            stringBuilder.append("Snapshot #").append(snapshotMatch.getID()).append("\n");
-
-            Map<String, String> items = matchingData.get(snapshotMatch);
-            for(String key: items.keySet()) {
-                stringBuilder.append("\t Matched '").append(key).append("' value: ").append(items.get(key)).append("\n");
-            }
+            List<CorrelationContext> correlationContexts = correlationMap.get(snapshotMatch);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/components/CorrelationElement.fxml"));
             Parent editorScene = loader.load();
             CorrelationElementController correlationElementController = loader.getController();
-            //TODO Change this, the action, transaction, and step are all refering to the current snapshot, not the correlation snapshot. Our correlation manager needs to return all this data
-            correlationElementController.setup(script, action, transaction, step, snapshotMatch, items);
+            //TODO Change this, the action, transaction, and step are all referring to the current snapshot, not the correlation snapshot. Our correlation manager needs to return all this data
+            correlationElementController.setup(scriptContext.getScript(), snapshotMatch, correlationContexts);
             this.correlationTimeLine.getChildren().add(editorScene);
         }
 

@@ -1,4 +1,4 @@
-package com.phoenixx.core.snapshots;
+package com.phoenixx.core.snapshots.data;
 
 /**
  * @author Junaid Talpur
