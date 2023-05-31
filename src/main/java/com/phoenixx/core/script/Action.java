@@ -27,10 +27,13 @@ public class Action {
      * Parse the data in the given lines from the file, and retrieve the transactions sections
      * @param fileLines List of strings containing data from the action file
      */
+    private Step currentStep = null;
+
     private void readAction(List<String> fileLines) {
-        boolean multiComment = false;
         Transaction currentTransaction = null;
-        Step currentStep = null;
+        Transaction hydraOtherTransaction = new Transaction("Hydra-Other", this);
+
+        boolean multiComment = false;
         for(String line: fileLines) {
             // Multiline comment detection
             if (!multiComment && line.contains("/*")) {
@@ -51,6 +54,10 @@ public class Action {
                 if(foundTransaction != null) {
                     //System.out.println("FOUND THE START TRANSACTION NAME: " + foundTransaction);
                     currentTransaction = new Transaction(foundTransaction, this);
+                } else {
+                    // In certain cases, we'll come across a step that is not inside a transaction which can't be ignored
+                    // So it gets added to the hydraOtherTransaction
+                    this.parseStep(line, hydraOtherTransaction);
                 }
             } else {
                 // Detect the end of a transaction with regex
@@ -61,47 +68,52 @@ public class Action {
                     this.transactions.add(currentTransaction);
                     currentTransaction = null;
                 } else {
-                    //TODO Add detection for web_url, web_custom_request, web_submit_data
-                    /**
-                     *  Load the t[x].inf, t[x].json, t[x]_RequestBody.txt, t[x]_RequestHeader.txt, t[x]_ResponseHeader.txt
-                     */
-                    if(currentStep == null) {
-                        //TODO Might be more efficient to do a simple .contains on the string and THEN grab the Pattern maybe?
-                        String function = "web_url";
-                        String foundRequest = Parser.regexCheck(line, Parser.WEB_URL);
-                        if(foundRequest == null) {
-                            function = "web_custom_request";
-                            foundRequest = Parser.regexCheck(line, Parser.WEB_CUSTOM_REQUEST);
-                        }
-                        if(foundRequest == null) {
-                            function = "web_submit_data";
-                            foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_DATA);
-                        }
-                        if(foundRequest == null) {
-                            function = "web_submit_form";
-                            foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_FORM);
-                        }
-                        if(foundRequest == null) {
-                            function = "web_image";
-                            foundRequest = Parser.regexCheck(line, Parser.WEB_IMAGE);
-                        }
-
-                        if (foundRequest != null) {
-                            currentStep = new Step(function, foundRequest, currentTransaction);
-                        }
-                    } else {
-                        // End of the current Step
-                        if(line.trim().equals("LAST);")) {
-                            currentTransaction.getSteps().add(currentStep);
-                            //System.out.println("Finished step: " + currentStep.getStepName() + " with steps: \n"+currentStep.getStepData());
-                            currentStep = null;
-                        } else {
-                            line = line.trim();
-                            // Remove the whitespace and the first and last two characters (the quotes and final comma)
-                            currentStep.getStepData().add(line.substring(1, line.length() - 2));
-                        }
-                    }
+                    this.parseStep(line, currentTransaction);
                 }
+            }
+        }
+        this.transactions.add(hydraOtherTransaction);
+    }
+
+    private void parseStep(String line, Transaction currentTransaction) {
+        //TODO Add detection for web_url, web_custom_request, web_submit_data
+        /**
+         *  Load the t[x].inf, t[x].json, t[x]_RequestBody.txt, t[x]_RequestHeader.txt, t[x]_ResponseHeader.txt
+         */
+        if(currentStep == null) {
+            //TODO Might be more efficient to do a simple .contains on the string and THEN grab the Pattern maybe?
+            String function = "web_url";
+            String foundRequest = Parser.regexCheck(line, Parser.WEB_URL);
+            if(foundRequest == null) {
+                function = "web_custom_request";
+                foundRequest = Parser.regexCheck(line, Parser.WEB_CUSTOM_REQUEST);
+            }
+            if(foundRequest == null) {
+                function = "web_submit_data";
+                foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_DATA);
+            }
+            if(foundRequest == null) {
+                function = "web_submit_form";
+                foundRequest = Parser.regexCheck(line, Parser.WEB_SUBMIT_FORM);
+            }
+            if(foundRequest == null) {
+                function = "web_image";
+                foundRequest = Parser.regexCheck(line, Parser.WEB_IMAGE);
+            }
+
+            if (foundRequest != null) {
+                currentStep = new Step(function, foundRequest, currentTransaction);
+            }
+        } else {
+            // End of the current Step
+            if(line.trim().equals("LAST);")) {
+                currentTransaction.getSteps().add(currentStep);
+                //System.out.println("Finished step: " + currentStep.getStepName() + " with steps: \n"+currentStep.getStepData());
+                currentStep = null;
+            } else {
+                line = line.trim();
+                // Remove the whitespace and the first and last two characters (the quotes and final comma)
+                currentStep.getStepData().add(line.substring(1, line.length() - 2));
             }
         }
     }
