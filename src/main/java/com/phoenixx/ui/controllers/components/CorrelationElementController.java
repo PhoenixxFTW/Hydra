@@ -2,8 +2,10 @@ package com.phoenixx.ui.controllers.components;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.phoenixx.core.script.Action;
 import com.phoenixx.core.script.IScript;
 import com.phoenixx.core.script.Step;
+import com.phoenixx.core.script.Transaction;
 import com.phoenixx.core.snapshots.data.CorrelationContext;
 import com.phoenixx.core.snapshots.data.QueryObj;
 import com.phoenixx.core.snapshots.impl.Snapshot;
@@ -42,6 +44,20 @@ public class CorrelationElementController {
         String stepName = "NULL";
 
         Step step = script.getStepFromID(snapshotMatched.getID());
+
+       // System.out.println("STARTING STEP SEARCH @@@@@");
+        for(Action action: script.getActions()) {
+            for(Transaction transaction: action.getTransactions()) {
+                for(Step step2: transaction.getSteps()) {
+                    //System.out.println("Found step: " + step.getSnapshotId() + " NAME: " + step.getStepName());
+                    if(step2.getSnapshotId() == snapshotMatched.getID()) {
+                        step = step2;
+                    }
+                }
+            }
+        }
+        //System.out.println("FOUND TOTAL STEPS: " + counter);
+        System.out.println("SNAPSHOT: " + snapshotMatched.getID() + " Had Total of " + correlationData.size() + " CORRELATIONS!");
 
         if(step != null) {
             stepName = step.getStepName();

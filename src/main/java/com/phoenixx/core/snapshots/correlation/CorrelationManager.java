@@ -52,20 +52,22 @@ public class CorrelationManager {
             return this.correlationCache.get(snapshot.getID());
         }
 
-
         Gson gson = new Gson();
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
         Map<Snapshot, List<CorrelationContext>> allCorrelations = new HashMap<>();
 
+        String jsonData;
         List<JsonObject> firstObjects = new ArrayList<>();
-        String jsonData = snapshot.getRequest().getBody();
-        //System.out.println("CONVERTING MAIN @@@@@@@@@@ JSON DATA TO OBJ: " + jsonData);
-        //JsonObject firstObj = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonObject.class);
+        if(snapshot.getRequest() != null && snapshot.getRequest().getBody() != null) {
+            jsonData = snapshot.getRequest().getBody();
+            //System.out.println("CONVERTING MAIN @@@@@@@@@@ JSON DATA TO OBJ: " + jsonData);
+            //JsonObject firstObj = gson.fromJson(currentSnapshot.getRequest().getBody(), JsonObject.class);
 
-        if(this.isValidJSON(jsonData)) {
-            firstObjects = this.jsonStringToObjects(jsonData, gson);
-        } else {
-            System.out.println("Snapshot: " + snapshot.getID() + " claimed to have JSON body, but could not convert data to Json!");
+            if (this.isValidJSON(jsonData)) {
+                firstObjects = this.jsonStringToObjects(jsonData, gson);
+            } else {
+                // System.out.println("Snapshot: " + snapshot.getID() + " claimed to have JSON body, but could not convert data to Json!");
+            }
         }
 
         // Loop through all snapshots before the current one
@@ -78,12 +80,12 @@ public class CorrelationManager {
             }
 
             // Correlate Headers
-            correlations.addAll(correlateQueryObjs(snapshot, otherSnapshot, snapshot.getRequest().getHeaders().values(), otherSnapshot.getResponse().getHeaders().values(), levenshteinDistance, CorrelationType.HEADERS));
+            //correlations.addAll(correlateQueryObjs(snapshot, otherSnapshot, snapshot.getRequest().getHeaders().values(), otherSnapshot.getResponse().getHeaders().values(), levenshteinDistance, CorrelationType.HEADERS));
 
             // Correlate Cookies
-            correlations.addAll(correlateQueryObjs(snapshot, otherSnapshot, snapshot.getRequest().getCookies().values(), otherSnapshot.getResponse().getCookies().values(), levenshteinDistance, CorrelationType.COOKIE));
+            //correlations.addAll(correlateQueryObjs(snapshot, otherSnapshot, snapshot.getRequest().getCookies().values(), otherSnapshot.getResponse().getCookies().values(), levenshteinDistance, CorrelationType.COOKIE));
 
-            allCorrelations.put(otherSnapshot, correlations);
+            //allCorrelations.put(otherSnapshot, correlations);
 
             // TODO This only support json data types, we need to add support for normal data bodies
             if(snapshot.getRequest().contentType == null || snapshot.getRequest().getBody() == null || !snapshot.getRequest().contentType.equalsIgnoreCase("application/json")) {
@@ -103,12 +105,13 @@ public class CorrelationManager {
             if(this.isValidJSON(jsonData)) {
                 jsonObjects = this.jsonStringToObjects(jsonData, gson);
             } else {
-                System.out.println("Snapshot: " + otherSnapshot.getID() + " claimed to have JSON body, but could not convert data to Json!");
+                //System.out.println("Snapshot: " + otherSnapshot.getID() + " claimed to have JSON body, but could not convert data to Json!");
                 continue;
             }
 
             //TODO This only supports JSON bodies
 
+            List<String> completed = new ArrayList<>();
             // Loop through the snapshot that will be used to compare to the others
             for (JsonObject firstObj: firstObjects) {
                 // Since the body data can have an array element, we loop for multiple json objects just in case
@@ -116,16 +119,23 @@ public class CorrelationManager {
                     // Now the fun begins, this is where the elements / values from the first snapshot are looped over
                     for (Map.Entry<String, JsonElement> entry1 : firstObj.entrySet()) {
                         for (Map.Entry<String, JsonElement> entry2 : secondObj.entrySet()) {
-                            if (entry1.getKey().equals(entry2.getKey())) {
-                                if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive()) {
+                            if(!completed.contains(entry1.getKey()) && !completed.contains(entry2.getKey())) {
+                            //if (entry1.getKey().equals(entry2.getKey())) {
+                                // This will ensure that the value is ONLY a string
+                                if (entry1.getValue().isJsonPrimitive() && entry2.getValue().isJsonPrimitive() &&
+                                        entry1.getValue().getAsJsonPrimitive().isString() && entry2.getValue().getAsJsonPrimitive().isString()) {
                                     String value1 = entry1.getValue().getAsString();
                                     String value2 = entry2.getValue().getAsString();
 
-                                    int distance = levenshteinDistance.apply(value1, value2);
-                                    if(distance <= THRESHOLD) {
-                                        int accuracy = 100 - ((distance - MIN_THRESHOLD) * 100) / (MAX_THRESHOLD - MIN_THRESHOLD);
-                                        correlations.add(new CorrelationContext(entry1.getKey(), entry2.getKey(), value1, value2, accuracy, CorrelationType.BODY));
-                                        System.out.println("\nSNAPSHOTS #" + snapshot.getID() + " -> #" + otherSnapshot.getID() + " | Key: " + entry1.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                                    if(!value1.isEmpty() && !value2.isEmpty()) {
+                                        int distance = levenshteinDistance.apply(value1, value2);
+                                        if(distance <= THRESHOLD) {
+                                            int accuracy = 100 - ((distance - MIN_THRESHOLD) * 100) / (MAX_THRESHOLD - MIN_THRESHOLD);
+                                            correlations.add(new CorrelationContext(entry1.getKey(), entry2.getKey(), value1, value2, accuracy, CorrelationType.BODY));
+                                            System.out.println("SNAPSHOTS #" + snapshot.getID() + " -> #" + otherSnapshot.getID() + " | Key1: " + entry1.getKey() + " Key2: " + entry2.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                                            completed.add(entry1.getKey());
+                                            completed.add(entry2.getKey());
+                                        }
                                     }
                                 }
                             }
@@ -133,8 +143,13 @@ public class CorrelationManager {
                     }
                 }
             }
-            allCorrelations.put(otherSnapshot, correlations);
+            // If correlations were empty, we don't add them to main list
+            if(correlations.size() > 0) {
+                System.out.println("Found " + correlations.size() + " correlations for snapshots: " + snapshot.getID() + " > " + otherSnapshot.getID());
+                allCorrelations.put(otherSnapshot, correlations);
+            }
         }
+        System.out.println("Found total correlations: " + allCorrelations.size());
 
         return allCorrelations;
     }
@@ -150,12 +165,17 @@ public class CorrelationManager {
                 if(this.correlationFilter.contains(requestQuery.getKey()) || this.correlationFilter.contains(responseQuery.getKey())) {
                     continue;
                 }
+                String value1 = requestQuery.getVal();
+                String value2 = responseQuery.getVal();
 
-                int distance = levenshteinDistance.apply(requestQuery.getVal(), responseQuery.getVal());
-                if(distance <= THRESHOLD) {
-                    int accuracy = 100 - ((distance - MIN_THRESHOLD) * 100) / (MAX_THRESHOLD - MIN_THRESHOLD);
-                    correlations.add(new CorrelationContext(requestQuery.getKey(), responseQuery.getKey(), requestQuery.getVal(), responseQuery.getVal(), accuracy, correlationType));
-                    System.out.println("SNAPSHOTS #" + snapshot.getID() + " -> #" + otherSnapshot.getID() + " | Key: " + requestQuery.getKey() + ", Levenshtein Distance: " + distance + " val1: " +  requestQuery.getVal() + " val2: " +  responseQuery.getVal());
+                if(!value1.isEmpty() && !value2.isEmpty()) {
+
+                    int distance = levenshteinDistance.apply(requestQuery.getVal(), responseQuery.getVal());
+                    if (distance <= THRESHOLD) {
+                        int accuracy = 100 - ((distance - MIN_THRESHOLD) * 100) / (MAX_THRESHOLD - MIN_THRESHOLD);
+                        correlations.add(new CorrelationContext(requestQuery.getKey(), responseQuery.getKey(), value1, value2, accuracy, correlationType));
+                        System.out.println("SNAPSHOTS #" + snapshot.getID() + " -> #" + otherSnapshot.getID() + " | Key: " + requestQuery.getKey() + " Key2: " + responseQuery.getKey() + ", Levenshtein Distance: " + distance + " val1: " + value1 + " val2: " + value2);
+                    }
                 }
             }
         }

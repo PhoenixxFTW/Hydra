@@ -53,6 +53,8 @@ public class RequestDataController {
         //Map<Snapshot, Map<String, String>> matchingData = scriptContext.getScript().getSnapshotManager().getPreReqs(snapshot.getID());
         Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, true);
 
+        System.out.println("Received total of: " + correlationMap.size() + " correlation map objects @");
+
         // We sort by the ID. Smaller ID's go first, larger ones come after
         Comparator<Snapshot> comparator = (Snapshot snapshot1, Snapshot snapshot2) -> (snapshot1.getID() < snapshot2.getID()) ? 1 : 0;
 
@@ -61,7 +63,7 @@ public class RequestDataController {
 
         this.correlationTimeLine.getChildren().clear();
 
-        for(Snapshot snapshotMatch: keys) {
+        for(Snapshot snapshotMatch: correlationMap.keySet()) {
             List<CorrelationContext> correlationContexts = correlationMap.get(snapshotMatch);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/components/CorrelationElement.fxml"));
@@ -69,6 +71,7 @@ public class RequestDataController {
             CorrelationElementController correlationElementController = loader.getController();
             //TODO Change this, the action, transaction, and step are all referring to the current snapshot, not the correlation snapshot. Our correlation manager needs to return all this data
             correlationElementController.setup(scriptContext.getScript(), snapshotMatch, correlationContexts);
+
             this.correlationTimeLine.getChildren().add(editorScene);
         }
 
