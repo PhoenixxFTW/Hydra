@@ -68,7 +68,7 @@ public abstract class AbstractScript implements IScript {
 
     @Override
     public Step getStepFromID(int ID) {
-        for(Action action : this.actions) {
+        for(Action action : getActions()) {
             for(Transaction transaction: action.getTransactions()) {
                 for(Step step: transaction.getSteps()) {
                     if(step.getSnapshotId() == ID) {

@@ -50,20 +50,20 @@ public class RequestDataController {
         this.setupTable(this.headersTable, httpObject.getHeaders());
         this.setupTable(this.cookiesTable, httpObject.getCookies());
 
+
         //Map<Snapshot, Map<String, String>> matchingData = scriptContext.getScript().getSnapshotManager().getPreReqs(snapshot.getID());
-        Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, true);
+        Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, false);
 
-        System.out.println("Received total of: " + correlationMap.size() + " correlation map objects @");
+        //System.out.println("Received total of: " + correlationMap.size() + " correlation map objects @");
 
-        // We sort by the ID. Smaller ID's go first, larger ones come after
-        Comparator<Snapshot> comparator = (Snapshot snapshot1, Snapshot snapshot2) -> (snapshot1.getID() < snapshot2.getID()) ? 1 : 0;
-
-        SortedSet<Snapshot> keys = new TreeSet<>(comparator);
-        keys.addAll(correlationMap.keySet());
+        // Retrieve the keys (IDs) from the Map and store them in a List
+        List<Snapshot> keys = new ArrayList<>(correlationMap.keySet());
+        // Sort the List using a custom Comparator by each Snapshots ID. Smaller ID's go first, larger ones come after
+        keys.sort(Comparator.comparingInt(Snapshot::getID));
 
         this.correlationTimeLine.getChildren().clear();
 
-        for(Snapshot snapshotMatch: correlationMap.keySet()) {
+        for(Snapshot snapshotMatch: keys) {
             List<CorrelationContext> correlationContexts = correlationMap.get(snapshotMatch);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hydra/fxml/components/CorrelationElement.fxml"));

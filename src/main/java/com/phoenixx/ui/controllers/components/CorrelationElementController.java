@@ -13,8 +13,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 
 import java.util.List;
@@ -44,8 +42,6 @@ public class CorrelationElementController {
         String stepName = "NULL";
 
         Step step = script.getStepFromID(snapshotMatched.getID());
-
-       // System.out.println("STARTING STEP SEARCH @@@@@");
         for(Action action: script.getActions()) {
             for(Transaction transaction: action.getTransactions()) {
                 for(Step step2: transaction.getSteps()) {
@@ -56,8 +52,8 @@ public class CorrelationElementController {
                 }
             }
         }
-        //System.out.println("FOUND TOTAL STEPS: " + counter);
-        System.out.println("SNAPSHOT: " + snapshotMatched.getID() + " Had Total of " + correlationData.size() + " CORRELATIONS!");
+
+        //System.out.println("SNAPSHOT: " + snapshotMatched.getID() + " Had Total of " + correlationData.size() + " CORRELATIONS!");
 
         if(step != null) {
             stepName = step.getStepName();
@@ -74,10 +70,10 @@ public class CorrelationElementController {
         this.snapshotNameLabel.setText(stepName);
         this.snapshotNameLabel.setFont(new Font(16));
 
-        this.snapshotLocLabel.setText(actionName + "/" + transactionName + "/" + stepName);
+        this.snapshotLocLabel.setText(actionName + " / " + transactionName + " / " + stepName);
         this.snapshotLocLabel.setStyle("-fx-text-fill: lightgray");
 
-        HBox.setHgrow(this.correlationTable, Priority.ALWAYS);
+        //HBox.setHgrow(this.correlationTable, Priority.ALWAYS);
 
         JFXTreeTableColumn<QueryObj, String> correlationParamColumn = new JFXTreeTableColumn<>("Correlation Parameter");
         correlationParamColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue().getKey()));
