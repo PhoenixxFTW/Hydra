@@ -20,9 +20,8 @@ You can find some screenshots of the tool below, please keep in mind everything 
 
 ![LoadScript](https://user-images.githubusercontent.com/24358694/234293102-3704c102-baff-4ed6-a279-33be4e29a024.jpg)
 ![image](https://user-images.githubusercontent.com/24358694/234886378-a83d7613-39b1-4fe3-89bc-95fd2acca240.png)
-![image](https://github.com/PhoenixxFTW/Hydra/assets/24358694/d6913346-e738-4ca8-9176-303748f16b12)
-![Automatic Correlation Analysis](https://github.com/PhoenixxFTW/Hydra/assets/24358694/1f504e41-9418-48df-876c-a647af2580e3)
-![Automatic Correlation Analysis](https://github.com/PhoenixxFTW/Hydra/assets/24358694/844431f9-5668-4c73-a1ce-0a54b9ba70dd)
+![Request viewer](https://github.com/PhoenixxFTW/Hydra/assets/24358694/12a839d1-79e4-4012-bd9b-9ae08466c206)
+![Automatic Correlation Analysis](https://github.com/PhoenixxFTW/Hydra/assets/24358694/bba5f047-e3f9-44e1-a9b7-11fc8e8bafbc)
 
 
 ## Future plans
