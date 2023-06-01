@@ -73,11 +73,11 @@
                         <Insets bottom="5.0" />
                      </padding>
                   </HBox>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="999.0" VBox.vgrow="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="999.0" style="-fx-background-color: #2a3139;" VBox.vgrow="ALWAYS">
                     <content>
-                        <StackPane prefHeight="581.0" prefWidth="997.0">
+                        <StackPane prefHeight="581.0" prefWidth="997.0" style="-fx-background-color: #2a3139;">
                            <children>
-                              <VBox fx:id="correlationTimeLine" prefHeight="200.0" prefWidth="100.0" />
+                              <VBox fx:id="correlationTimeLine" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #2a3139;" />
                            </children>
                         </StackPane>
                     </content>
