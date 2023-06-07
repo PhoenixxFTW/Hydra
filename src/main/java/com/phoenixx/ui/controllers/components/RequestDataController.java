@@ -52,7 +52,7 @@ public class RequestDataController {
 
 
         //Map<Snapshot, Map<String, String>> matchingData = scriptContext.getScript().getSnapshotManager().getPreReqs(snapshot.getID());
-        Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, false);
+        Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, true);
 
         //System.out.println("Received total of: " + correlationMap.size() + " correlation map objects @");
 
