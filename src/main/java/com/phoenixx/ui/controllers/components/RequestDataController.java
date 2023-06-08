@@ -50,7 +50,6 @@ public class RequestDataController {
         this.setupTable(this.headersTable, httpObject.getHeaders());
         this.setupTable(this.cookiesTable, httpObject.getCookies());
 
-
         //Map<Snapshot, Map<String, String>> matchingData = scriptContext.getScript().getSnapshotManager().getPreReqs(snapshot.getID());
         Map<Snapshot, List<CorrelationContext>> correlationMap = scriptContext.getScript().getSnapshotManager().getCorrelationManager().scanCorrelations(snapshot, true);
 
